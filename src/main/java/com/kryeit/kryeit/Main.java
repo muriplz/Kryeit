@@ -1,5 +1,6 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.GlueKillEvent;
 import com.kryeit.kryeit.event.SchematicannonPlaceEvent;
 
 import com.kryeit.kryeit.listener.test;
@@ -21,6 +22,6 @@ public class Main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		SchematicannonPlaceEvent.EVENT.register(new test());
+		GlueKillEvent.EVENT.register(new test());
 	}
 }

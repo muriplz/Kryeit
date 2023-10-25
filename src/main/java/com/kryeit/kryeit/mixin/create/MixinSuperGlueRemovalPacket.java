@@ -16,7 +16,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.kryeit.kryeit.mixin.create.testedCancellable;
+package com.kryeit.kryeit.mixin.create;
 
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;

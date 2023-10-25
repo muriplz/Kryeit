@@ -3,8 +3,11 @@ package com.kryeit.kryeit.listener;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.claim.TrustType;
+import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.permission.Context;
 import com.griefdefender.api.permission.flag.Flags;
+import com.kryeit.kryeit.event.GlueKillEvent;
 import com.kryeit.kryeit.event.SchematicannonPlaceEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
@@ -21,18 +24,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class test implements SchematicannonPlaceEvent {
+public class test implements GlueKillEvent {
 
-
-    @Override
-    public boolean onCannonPlace(BlockEntity cannon, BlockPos target) {
-		final Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(cannon.getLevel()),
-				cannon.getBlockPos().getX(), cannon.getBlockPos().getY(), cannon.getBlockPos().getZ());
-		final Set<Context> contexts = new HashSet<>();
-		contexts.add(new Context("target", "create:schematicannon"));
-		final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(this,
-				cannon.getBlockPos().getX(), cannon.getBlockPos().getY(), cannon.getBlockPos().getZ()
-				, claim, null, Flags.BLOCK_PLACE,null, cannon, contexts, null, true);
-		return result == Tristate.FALSE;
+	@Override
+	public boolean onKillGlue(ServerPlayer player, List<SuperGlueEntity> entities) {
+		for (SuperGlueEntity glue : entities) {
+			for (BlockPos pos : glue.mainSupportingBlockPos.stream().toList()) {
+				final Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(glue.level()),
+						pos.getX(), pos.getY(), pos.getZ());
+				final Set<Context> contexts = new HashSet<>();
+				contexts.add(new Context("target", "create:super_glue"));
+				contexts.add(new Context("source", "spawnreason:" + ))
+				final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(this,
+						pos.getX(), pos.getY(), pos.getZ()
+						, claim, null, Flags.ENTITY_DAMAGE, player, glue, contexts, TrustTypes.BUILDER, true);
+				return result == Tristate.FALSE;
+			}
+		}
+		return false;
 	}
 }

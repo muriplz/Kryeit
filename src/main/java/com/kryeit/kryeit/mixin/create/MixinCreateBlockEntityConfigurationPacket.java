@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.event.BlockEntityConfigurationEvent;
+import com.kryeit.kryeit.event.BlockEntityConfigurationEvent;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.core.BlockPos;

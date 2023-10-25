@@ -20,6 +20,24 @@ String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
 version = "${mod_version}+${minecraft_version}" + (buildNumber != null ? "-${buildNumber}" : "")
 
 repositories {
+	mavenCentral()
+	maven {
+		name = 'aikar'
+		url = 'https://repo.aikar.co/content/groups/aikar'
+	}
+	maven {
+		name = 'GriefDefender'
+		url = 'https://repo.glaremasters.me/repository/bloodshot'
+	}
+	maven {
+		name = 'sonatype_releases'
+		url = 'https://oss.sonatype.org/content/repositories/releases'
+	}
+	maven {
+		name = 'sonatype_snapshots'
+		url = 'https://oss.sonatype.org/content/repositories/snapshots'
+	}
+
 	maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
 	maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
 	maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
@@ -34,6 +52,8 @@ repositories {
 }
 
 dependencies {
+	compileOnly "com.griefdefender:api:${griefdefender_version}"
+
 	// Setup
 	minecraft("com.mojang:minecraft:${minecraft_version}")
 	mappings(loom.layered {

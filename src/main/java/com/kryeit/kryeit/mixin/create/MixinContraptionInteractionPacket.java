@@ -18,8 +18,8 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.MinecraftServerSupplier;
-import com.kryeit.event.ContraptionInteractEvent;
+import com.kryeit.kryeit.event.ContraptionInteractEvent;
+import com.kryeit.kryeit.event.MinecraftServerSupplier;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.sync.ContraptionInteractionPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;

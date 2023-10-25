@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create.testedCancellable;
 
-import com.kryeit.event.GlueCreateEvent;
+import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;

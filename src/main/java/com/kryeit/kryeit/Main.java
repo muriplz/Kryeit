@@ -1,7 +1,8 @@
 package com.kryeit.kryeit;
 
-import com.kryeit.event.*;
-import com.kryeit.listener.test;
+import com.kryeit.kryeit.event.SchematicannonPlaceEvent;
+
+import com.kryeit.kryeit.listener.test;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import net.fabricmc.api.ModInitializer;
@@ -20,6 +21,6 @@ public class Main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		TrainRelocateEvent.EVENT.register(new test());
+		SchematicannonPlaceEvent.EVENT.register(new test());
 	}
 }

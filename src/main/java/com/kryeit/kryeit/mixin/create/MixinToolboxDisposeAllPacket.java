@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.event.ToolboxModeEvent;
+import com.kryeit.kryeit.event.ToolboxModeEvent;
 import com.simibubi.create.content.equipment.toolbox.ToolboxDisposeAllPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.core.BlockPos;

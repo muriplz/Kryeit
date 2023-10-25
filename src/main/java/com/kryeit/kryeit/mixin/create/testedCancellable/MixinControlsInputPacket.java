@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create.testedCancellable;
 
-import com.kryeit.event.ControlsInteractEvent;
+import com.kryeit.kryeit.event.ControlsInteractEvent;
 import com.simibubi.create.content.contraptions.actors.trainControls.ControlsInputPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.server.level.ServerPlayer;

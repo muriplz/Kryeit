@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.event.SchematicannonPlaceEvent;
+import com.kryeit.kryeit.event.SchematicannonPlaceEvent;
 import com.simibubi.create.content.schematics.SchematicPrinter;
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;

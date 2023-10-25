@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create.testedCancellable;
 
-import com.kryeit.event.TrainRelocateEvent;
+import com.kryeit.kryeit.event.TrainRelocateEvent;
 import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.core.BlockPos;

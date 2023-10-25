@@ -1,12 +1,19 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.kryeit.modid.mixin",
+  "package": "com.kryeit.kryeit.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-  ],
-  "client": [
-    "MinecraftMixin"
+    "MinecraftServerMixin",
+    "create.MixinContraptionInteractionPacket",
+    "create.testedCancellable.MixinControlsInputPacket",
+    "create.MixinCreateBlockEntityConfigurationPacket",
+    "create.MixinCreateSchematicannonBlockEntity",
+    "create.MixinDeployerBlockEntity",
+    "create.testedCancellable.MixinSuperGlueRemovalPacket",
+    "create.testedCancellable.MixinSuperGlueSelectionPacket",
+    "create.MixinToolboxDisposeAllPacket",
+    "create.testedCancellable.MixinTrainRelocationPacket"
   ],
   "injectors": {
     "defaultRequire": 1

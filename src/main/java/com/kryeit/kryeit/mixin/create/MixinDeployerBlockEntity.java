@@ -18,7 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.event.DeployerInteractionEvent;
+import com.kryeit.kryeit.event.DeployerInteractionEvent;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

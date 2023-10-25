@@ -34,7 +34,6 @@ public class test implements GlueKillEvent {
 				final Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(glue.level()),
 						pos.getX(), pos.getY(), pos.getZ());
 				final Set<Context> contexts = new HashSet<>();
-				contexts.add(new Context("target", "create:super_glue"));
 				final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(this,
 						pos.getX(), pos.getY(), pos.getZ()
 						, claim, null, Flags.ENTITY_DAMAGE, player, glue, contexts, TrustTypes.BUILDER, true);

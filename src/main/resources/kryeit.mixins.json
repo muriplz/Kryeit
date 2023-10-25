@@ -8,6 +8,7 @@
     "create.MixinContraptionInteractionPacket",
     "create.MixinControlsInputPacket",
     "create.MixinCreateBlockEntityConfigurationPacket",
+    "create.MixinCreateContraption",
     "create.MixinCreateSchematicannonBlockEntity",
     "create.MixinDeployerBlockEntity",
     "create.MixinSuperGlueRemovalPacket",

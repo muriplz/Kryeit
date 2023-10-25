@@ -38,7 +38,6 @@ public class MixinCreateBlockEntityConfigurationPacket {
 	@Inject(method = "lambda$handle$0", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci){
 		ServerPlayer player = context.getSender();
-		ci.cancel();
 
 		if (BlockEntityConfigurationEvent.EVENT.invoker().onConfigurationChange(player, pos))
 			ci.cancel();

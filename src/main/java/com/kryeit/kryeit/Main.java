@@ -1,8 +1,10 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.ContraptionMoveEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.kryeit.kryeit.event.SchematicannonPlaceEvent;
 
+import com.kryeit.kryeit.listener.t;
 import com.kryeit.kryeit.listener.test;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
@@ -23,5 +25,6 @@ public class Main implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		GlueKillEvent.EVENT.register(new test());
+		ContraptionMoveEvent.EVENT.register(new t());
 	}
 }

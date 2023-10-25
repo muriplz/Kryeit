@@ -1,4 +1,4 @@
-package com.kryeit.kryeit.event;
+package com.kryeit.kryeit;
 
 import net.minecraft.server.MinecraftServer;
 

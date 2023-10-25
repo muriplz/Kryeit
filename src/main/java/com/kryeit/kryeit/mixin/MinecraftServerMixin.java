@@ -1,6 +1,6 @@
 package com.kryeit.kryeit.mixin;
 
-import com.kryeit.kryeit.event.MinecraftServerSupplier;
+import com.kryeit.kryeit.MinecraftServerSupplier;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

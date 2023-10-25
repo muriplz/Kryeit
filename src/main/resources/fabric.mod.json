@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "kryeit",
   "version": "${version}",
-  "name": "Example Mod",
+  "name": "Kryeit",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
@@ -15,11 +15,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.example.modid.ExampleMod"
+      "com.kryeit.kryeit.Main"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "kryeit.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",

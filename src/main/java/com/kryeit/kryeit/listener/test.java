@@ -28,7 +28,7 @@ public class test implements GlueKillEvent {
 
 	@Override
 	public boolean onKillGlue(ServerPlayer player, List<SuperGlueEntity> entities) {
-		Tristate tristate = Tristate.FALSE;
+		Tristate tristate = Tristate.TRUE;
 		for (SuperGlueEntity glue : entities) {
 			for (BlockPos pos : glue.mainSupportingBlockPos.stream().toList()) {
 				final Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(glue.level()),

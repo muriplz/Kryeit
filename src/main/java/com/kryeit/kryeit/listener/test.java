@@ -28,19 +28,19 @@ public class test implements GlueKillEvent {
 
 	@Override
 	public boolean onKillGlue(ServerPlayer player, List<SuperGlueEntity> entities) {
+		Tristate tristate = Tristate.FALSE;
 		for (SuperGlueEntity glue : entities) {
 			for (BlockPos pos : glue.mainSupportingBlockPos.stream().toList()) {
 				final Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(glue.level()),
 						pos.getX(), pos.getY(), pos.getZ());
 				final Set<Context> contexts = new HashSet<>();
 				contexts.add(new Context("target", "create:super_glue"));
-				contexts.add(new Context("source", "spawnreason:" + ))
 				final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(this,
 						pos.getX(), pos.getY(), pos.getZ()
 						, claim, null, Flags.ENTITY_DAMAGE, player, glue, contexts, TrustTypes.BUILDER, true);
-				return result == Tristate.FALSE;
+				tristate = result;
 			}
 		}
-		return false;
+		return tristate == Tristate.FALSE;
 	}
 }

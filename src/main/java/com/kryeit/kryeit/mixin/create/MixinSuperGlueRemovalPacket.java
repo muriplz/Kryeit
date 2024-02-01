@@ -49,7 +49,7 @@ public class MixinSuperGlueRemovalPacket {
 					glue.getBoundingBox()
 			);
 
-			if (GlueKillEvent.EVENT.invoker().onKillGlue(player, entities)) {
+			if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, entities)) {
 				ci.cancel();
 			}
 		}

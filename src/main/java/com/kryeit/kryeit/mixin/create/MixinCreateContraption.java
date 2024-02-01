@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = Contraption.class, priority = 1000001)
 public class MixinCreateContraption {
 
-	@Shadow
-	public BlockPos anchor;
+
 
 	@Inject(method = "movementAllowed", at = @At("HEAD"), cancellable = true)
 	public void onMovementAllowed(BlockState state, Level level, BlockPos pos, CallbackInfoReturnable<Boolean> cir){

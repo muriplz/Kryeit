@@ -1,15 +1,13 @@
 package com.kryeit.kryeit;
 
-import com.kryeit.kryeit.event.ContraptionMoveEvent;
-import com.kryeit.kryeit.event.GlueKillEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.listener.OnKillGlue;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import net.fabricmc.api.ModInitializer;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main implements ModInitializer {
     public static final String MOD_ID = "kryeit";
@@ -22,6 +20,6 @@ public class Main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		GlueKillEvent.EVENT.register(new OnKillGlue());
+		GlueCreateEvent.EVENT.register(new OnKillGlue());
 	}
 }

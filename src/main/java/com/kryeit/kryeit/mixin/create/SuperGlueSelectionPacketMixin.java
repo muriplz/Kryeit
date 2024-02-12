@@ -1,6 +1,6 @@
 /*
  * Open Parties and Claims Create Support - adds Create mod support to OPAC
- * Copyright (C) 2023, Xaero <xaero1996@gmail.com> and contributors
+ * Copyright (C) 2023-2023, Xaero <xaero1996@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of version 3 of the GNU Lesser General Public License
@@ -18,39 +18,43 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import com.kryeit.kryeit.event.ContraptionInteractEvent;
-import com.kryeit.kryeit.MinecraftServerSupplier;
-import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.sync.ContraptionInteractionPacket;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.kryeit.kryeit.event.GlueCreateEvent;
+import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
+import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
+import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-@Mixin(ContraptionInteractionPacket.class)
-public class MixinContraptionInteractionPacket {
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.AABB;
+
+@Mixin(SuperGlueSelectionPacket.class)
+public class SuperGlueSelectionPacketMixin {
 
 	@Shadow
-	private InteractionHand interactionHand;
-
+	private BlockPos from;
 	@Shadow
-	private int target;
+	private BlockPos to;
 
 	@Inject(method = "lambda$handle$0", remap = false, at = @At("HEAD"), cancellable = true)
-	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci) {
-		ServerPlayer player = context.getSender();
-		Entity entity = MinecraftServerSupplier.getServer().getLevel(Level.OVERWORLD).getEntity(target);
-		if (entity instanceof AbstractContraptionEntity contraption) {
-			if (ContraptionInteractEvent.EVENT.invoker().onContraptionInteract(player, contraption.getContraption())) {
-				ci.cancel();
-			}
+	public void onActivate(SimplePacketBase.Context ctx, CallbackInfo ci){
+		ServerPlayer player = ctx.getSender();
+		List<SuperGlueEntity> entities = SuperGlueEntity.collectCropped(ctx.getSender().level(),
+				AABB.of(BoundingBox.fromCorners(new Vec3i(from.getX(), from.getY(), from.getZ()),
+						new Vec3i(to.getX(), to.getY(), to.getZ())))
+		);
+
+		if (GlueCreateEvent.EVENT.invoker().onCreateGlue(player, entities)) {
+			ci.cancel();
 		}
 	}
 }

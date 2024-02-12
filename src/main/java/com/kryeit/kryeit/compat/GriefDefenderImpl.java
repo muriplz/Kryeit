@@ -1,9 +1,9 @@
 package com.kryeit.kryeit.compat;
 
+import java.util.UUID;
+
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.User;
-
-import java.util.UUID;
 
 public class GriefDefenderImpl {
 

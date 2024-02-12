@@ -9,12 +9,12 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.level.ServerPlayer;
 
 public interface GlueCreateEvent {
-    Event<GlueCreateEvent> EVENT = EventFactory.createArrayBacked(GlueCreateEvent.class, listeners -> (player, entities) -> {
+    Event<GlueCreateEvent> EVENT = EventFactory.createArrayBacked(GlueCreateEvent.class, listeners -> (player, entity) -> {
         for (GlueCreateEvent listener : listeners) {
-            return listener.onCreateGlue(player, entities);
+            return listener.onCreateGlue(player, entity);
         }
         return false;
     });
 
-    boolean onCreateGlue(ServerPlayer player, List<SuperGlueEntity> entities);
+    boolean onCreateGlue(ServerPlayer player, SuperGlueEntity entity);
 }

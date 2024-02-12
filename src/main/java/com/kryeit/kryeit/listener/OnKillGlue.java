@@ -10,10 +10,10 @@ import net.minecraft.server.level.ServerPlayer;
 public class OnKillGlue implements GlueCreateEvent {
 
 	@Override
-	public boolean onCreateGlue(ServerPlayer player, List<SuperGlueEntity> entity) {
+	public boolean onCreateGlue(ServerPlayer player, SuperGlueEntity entity) {
 
 		System.out.println("Glue entities: " + entity);
-		System.out.println("Player: " + player + "size: " + entity.size());
+		System.out.println("Player: " + player);
 		return false;
 	}
 }

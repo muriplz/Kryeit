@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.kryeit.kryeit.compat.GriefDefenderImpl;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
@@ -43,8 +44,10 @@ public class SuperGlueSelectionPacketMixin {
 	public void onActivate(SimplePacketBase.Context context, CallbackInfoReturnable<Boolean> cir){
 
 		ServerPlayer player = context.getSender();
-		if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, BlockPos.betweenClosedStream(from, to).toList())) {
+
+		if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, GriefDefenderImpl.getBlockPositionsInCube(from, to))) {
 			cir.setReturnValue(false);
 		}
 	}
 }
+

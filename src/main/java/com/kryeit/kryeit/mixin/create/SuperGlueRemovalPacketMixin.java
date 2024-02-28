@@ -24,11 +24,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.kryeit.kryeit.compat.GriefDefenderImpl;
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueRemovalPacket;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -44,7 +44,7 @@ public class SuperGlueRemovalPacketMixin {
 		if (player != null) {
 			Entity entity = player.level().getEntity(entityId);
 			if (entity instanceof SuperGlueEntity superGlue) {
-				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, BlockPos.betweenClosedStream(superGlue.getBoundingBox()).toList())) {
+				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox()))) {
 					ci.cancel();
 				}
 			}

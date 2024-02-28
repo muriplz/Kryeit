@@ -28,6 +28,7 @@ import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueRemovalPacket;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -43,7 +44,7 @@ public class SuperGlueRemovalPacketMixin {
 		if (player != null) {
 			Entity entity = player.level().getEntity(entityId);
 			if (entity instanceof SuperGlueEntity superGlue) {
-				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, superGlue)) {
+				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, BlockPos.betweenClosedStream(superGlue.getBoundingBox()).toList())) {
 					ci.cancel();
 				}
 			}

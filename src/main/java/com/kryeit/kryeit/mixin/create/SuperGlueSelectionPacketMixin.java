@@ -18,31 +18,18 @@
 
 package com.kryeit.kryeit.mixin.create;
 
-import java.util.List;
-
-import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionHelper;
-
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.kryeit.kryeit.event.GlueCreateEvent;
-import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.phys.AABB;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SuperGlueSelectionPacket.class)
 public class SuperGlueSelectionPacketMixin {
@@ -54,18 +41,10 @@ public class SuperGlueSelectionPacketMixin {
 
 	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onActivate(SimplePacketBase.Context context, CallbackInfoReturnable<Boolean> cir){
+
 		ServerPlayer player = context.getSender();
-		AABB bb = SuperGlueEntity.span(from, to);
-
-		for (SuperGlueEntity glueEntity : player.level().getEntitiesOfClass(SuperGlueEntity.class, bb)) {
-			AABB glueBox = glueEntity.getBoundingBox();
-
-			if (bb.equals(glueBox)) {
-				if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, glueEntity)) {
-					cir.cancel();
-				}
-				return;
-			}
+		if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, BlockPos.betweenClosedStream(from, to).toList())) {
+			cir.setReturnValue(false);
 		}
 	}
 }

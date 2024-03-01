@@ -1,5 +1,9 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.TrainRelocationEvent;
+
+import com.kryeit.kryeit.listener.OnTrainRelocate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +24,7 @@ public class Main implements ModInitializer {
 		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
 			GlueCreateEvent.EVENT.register(new OnCreateGlue());
 			GlueKillEvent.EVENT.register(new OnKillGlue());
+			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 		}
 	}
 }

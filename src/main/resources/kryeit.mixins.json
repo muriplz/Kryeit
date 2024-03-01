@@ -6,7 +6,8 @@
   "mixins": [
     "MinecraftServerMixin",
     "create.SuperGlueRemovalPacketMixin",
-    "create.SuperGlueSelectionPacketMixin"
+    "create.SuperGlueSelectionPacketMixin",
+    "create.TrainRelocationPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1

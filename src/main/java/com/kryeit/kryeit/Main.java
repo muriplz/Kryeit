@@ -1,17 +1,17 @@
 package com.kryeit.kryeit;
 
-import com.kryeit.kryeit.event.TrainRelocationEvent;
-
-import com.kryeit.kryeit.listener.OnTrainRelocate;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kryeit.kryeit.compat.CompatAddon;
+import com.kryeit.kryeit.event.ControlsInteractionEvent;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
+import com.kryeit.kryeit.event.TrainRelocationEvent;
+import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
 import com.kryeit.kryeit.listener.OnKillGlue;
+import com.kryeit.kryeit.listener.OnTrainRelocate;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -25,6 +25,7 @@ public class Main implements ModInitializer {
 			GlueCreateEvent.EVENT.register(new OnCreateGlue());
 			GlueKillEvent.EVENT.register(new OnKillGlue());
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
+			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 		}
 	}
 }

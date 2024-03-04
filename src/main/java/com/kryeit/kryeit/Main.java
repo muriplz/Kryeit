@@ -1,5 +1,7 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.storage.TrainTrustManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +21,10 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "kryeit";
     public static final Logger LOGGER = LoggerFactory.getLogger("Create: Kryeit");
 
+	public static TrainTrustManager trainTrustManager = new TrainTrustManager();
 	@Override
 	public void onInitialize() {
+
 		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
 			GlueCreateEvent.EVENT.register(new OnCreateGlue());
 			GlueKillEvent.EVENT.register(new OnKillGlue());

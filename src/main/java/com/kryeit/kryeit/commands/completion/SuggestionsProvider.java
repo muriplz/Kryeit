@@ -36,7 +36,7 @@ public class SuggestionsProvider {
 			}
 			List<String> playerNames = Main.trainTrustManager.getTrustedPlayers(ownerUUID).stream()
 					.map(Offlines::getNameByUUID)
-					.collect(Collectors.toList());
+					.toList();
 			return suggestMatchingPlayerNames(builder, playerNames);
 		};
 	}

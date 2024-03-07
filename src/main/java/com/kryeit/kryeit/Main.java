@@ -1,6 +1,8 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.ToolboxDisposeAllEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
+import com.kryeit.kryeit.listener.OnToolboxDispose;
 import com.kryeit.kryeit.listener.OnToolboxEquip;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 
@@ -33,6 +35,7 @@ public class Main implements ModInitializer {
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
+			ToolboxDisposeAllEvent.EVENT.register(new OnToolboxDispose());
 		}
 	}
 }

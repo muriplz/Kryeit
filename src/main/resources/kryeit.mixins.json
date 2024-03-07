@@ -8,6 +8,7 @@
     "create.ControlsInteractionBehaviourMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
+    "create.ToolboxDisposeAllPacketMixin",
     "create.ToolboxEquipPacketMixin",
     "create.TrainRelocationPacketMixin"
   ],

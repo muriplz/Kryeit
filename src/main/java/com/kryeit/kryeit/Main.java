@@ -1,5 +1,7 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.ToolboxEquipEvent;
+import com.kryeit.kryeit.listener.OnToolboxEquip;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ public class Main implements ModInitializer {
 			GlueKillEvent.EVENT.register(new OnKillGlue());
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
+			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
 		}
 	}
 }

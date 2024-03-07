@@ -13,25 +13,21 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SuggestionsProvider {
-	public static SuggestionProvider<CommandSourceStack> suggestOnlinePlayers() {
-		return (context, builder) -> suggestMatchingPlayerNames(builder, MinecraftServerSupplier.getServer().getPlayerList().getPlayers().stream()
-				.map(ServerPlayer::getGameProfile)
+	public static SuggestionProvider<ServerCommandSource> suggestOnlinePlayers() {
+		return (context, builder) -> suggestMatchingPlayerNames(builder, MinecraftServerSupplier.getServer().getPlayerManager().getPlayerList().stream()
+				.map(ServerPlayerEntity::getGameProfile)
 				.map(GameProfile::getName)
 				.collect(Collectors.toList()));
 	}
 
-	public static SuggestionProvider<CommandSourceStack> suggestTrainTrustedPlayers() {
+	public static SuggestionProvider<ServerCommandSource> suggestTrainTrustedPlayers() {
 		return (context, builder) -> {
-			UUID ownerUUID;
-			try {
-				ownerUUID = context.getSource().getPlayerOrException().getUUID();
-			} catch (Exception e) {
-				return Suggestions.empty();
-			}
+			UUID ownerUUID = context.getSource().getPlayer().getUuid();
+
 			List<String> playerNames = Main.trainTrustManager.getTrustedPlayers(ownerUUID).stream()
 					.map(Offlines::getNameByUUID)
 					.toList();

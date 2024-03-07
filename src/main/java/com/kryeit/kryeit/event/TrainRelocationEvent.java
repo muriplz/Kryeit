@@ -4,8 +4,8 @@ import com.simibubi.create.content.trains.entity.Train;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public interface TrainRelocationEvent {
     Event<TrainRelocationEvent> EVENT = EventFactory.createArrayBacked(TrainRelocationEvent.class, listeners -> (player, train, trainPos) -> {
@@ -15,5 +15,5 @@ public interface TrainRelocationEvent {
         return false;
     });
 
-    boolean onTrainRelocation(ServerPlayer player, Train train, BlockPos trainPos);
+    boolean onTrainRelocation(ServerPlayerEntity player, Train train, BlockPos trainPos);
 }

@@ -29,8 +29,8 @@ import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueRemovalPacket;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 @Mixin(value = SuperGlueRemovalPacket.class, remap = false)
 public class SuperGlueRemovalPacketMixin {
@@ -40,9 +40,9 @@ public class SuperGlueRemovalPacketMixin {
 
 	@Inject(method = "lambda$handle$0", remap = false, at = @At("HEAD"), cancellable = true)
 	private void onHandle(SuperGlueRemovalPacket.Context context, CallbackInfo ci) {
-		ServerPlayer player = context.getSender();
+		ServerPlayerEntity player = context.getSender();
 		if (player != null) {
-			Entity entity = player.level().getEntity(entityId);
+			Entity entity = player.getWorld().getEntityById(entityId);
 			if (entity instanceof SuperGlueEntity superGlue) {
 				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox()))) {
 					ci.cancel();

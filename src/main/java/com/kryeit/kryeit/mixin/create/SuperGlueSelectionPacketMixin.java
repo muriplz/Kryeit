@@ -29,8 +29,8 @@ import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 @Mixin(SuperGlueSelectionPacket.class)
 public class SuperGlueSelectionPacketMixin {
@@ -43,7 +43,7 @@ public class SuperGlueSelectionPacketMixin {
 	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onActivate(SimplePacketBase.Context context, CallbackInfoReturnable<Boolean> cir){
 
-		ServerPlayer player = context.getSender();
+		ServerPlayerEntity player = context.getSender();
 
 		if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, GriefDefenderImpl.getBlockPositionsInCube(from, to))) {
 			cir.setReturnValue(false);

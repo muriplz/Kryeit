@@ -14,8 +14,8 @@ import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 @Mixin(value = TrainRelocationPacket.class, remap = false)
 public class TrainRelocationPacketMixin {
@@ -28,7 +28,7 @@ public class TrainRelocationPacketMixin {
 
 	@Inject(method = "lambda$handle$2", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci){
-		ServerPlayer player = context.getSender();
+		ServerPlayerEntity player = context.getSender();
 		if (player == null)
 			return;
 

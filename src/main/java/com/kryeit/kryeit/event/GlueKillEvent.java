@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public interface GlueKillEvent {
     Event<GlueKillEvent> EVENT = EventFactory.createArrayBacked(GlueKillEvent.class, listeners -> (player, blocks) -> {
@@ -15,5 +15,5 @@ public interface GlueKillEvent {
         return false;
     });
 
-    boolean onKillGlue(ServerPlayer player, List<BlockPos> blocks);
+    boolean onKillGlue(ServerPlayerEntity player, List<BlockPos> blocks);
 }

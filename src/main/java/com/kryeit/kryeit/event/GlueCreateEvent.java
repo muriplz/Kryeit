@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public interface GlueCreateEvent {
     Event<GlueCreateEvent> EVENT = EventFactory.createArrayBacked(GlueCreateEvent.class, listeners -> (player, blocks) -> {
@@ -15,5 +15,5 @@ public interface GlueCreateEvent {
         return false;
     });
 
-    boolean onCreateGlue(ServerPlayer player, List<BlockPos> blocks);
+    boolean onCreateGlue(ServerPlayerEntity player, List<BlockPos> blocks);
 }

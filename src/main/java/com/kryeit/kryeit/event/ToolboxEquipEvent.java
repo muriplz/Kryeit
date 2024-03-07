@@ -2,8 +2,8 @@ package com.kryeit.kryeit.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public interface ToolboxEquipEvent {
     Event<ToolboxEquipEvent> EVENT = EventFactory.createArrayBacked(ToolboxEquipEvent.class, listeners -> (player, toolboxPos) -> {
@@ -13,5 +13,5 @@ public interface ToolboxEquipEvent {
         return false;
     });
 
-    boolean onToolboxEquip(ServerPlayer player, BlockPos toolboxPos);
+    boolean onToolboxEquip(ServerPlayerEntity player, BlockPos toolboxPos);
 }

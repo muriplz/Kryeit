@@ -1,5 +1,7 @@
 package com.kryeit.kryeit.commands;
 
+import java.util.List;
+
 import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.commands.completion.SuggestionsProvider;
 import com.kryeit.kryeit.offlines.Offlines;
@@ -12,8 +14,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-
-import java.util.List;
 
 public class TrainUntrust {
 	public static int execute(CommandContext<CommandSourceStack> context, String name) {

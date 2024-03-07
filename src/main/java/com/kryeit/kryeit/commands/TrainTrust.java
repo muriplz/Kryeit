@@ -1,5 +1,7 @@
 package com.kryeit.kryeit.commands;
 
+import java.util.List;
+
 import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.commands.completion.SuggestionsProvider;
 import com.kryeit.kryeit.offlines.Offlines;
@@ -7,14 +9,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class TrainTrust {
 	public static int execute(CommandContext<CommandSourceStack> context, String name) {

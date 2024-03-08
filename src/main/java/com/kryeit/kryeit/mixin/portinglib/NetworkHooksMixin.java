@@ -10,8 +10,8 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @Mixin(NetworkHooks.class)
-public class NetworkUtilMixin {
-	@Inject(method = "openScreen(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/screen/NamedScreenHandlerFactory;)V", remap = false, at = @At("HEAD"), cancellable = true)
+public class NetworkHooksMixin {
+	@Inject(method = "openScreen(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/screen/NamedScreenHandlerFactory;)V", remap = false, at = @At("HEAD"))
 	private static void onHandle(ServerPlayerEntity player, NamedScreenHandlerFactory containerSupplier, CallbackInfo ci) {
 		System.out.println("Hehe noice");
 	}

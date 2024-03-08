@@ -11,7 +11,7 @@
     "create.ToolboxDisposeAllPacketMixin",
     "create.ToolboxEquipPacketMixin",
     "create.TrainRelocationPacketMixin",
-    "portinglib.NetworkUtilMixin"
+    "portinglib.NetworkHooksMixin"
   ],
   "injectors": {
     "defaultRequire": 1

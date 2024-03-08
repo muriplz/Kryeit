@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.4-SNAPSHOT'
+	id 'fabric-loom' version '1.5+'
 	id 'maven-publish'
 }
 
@@ -62,10 +62,10 @@ dependencies {
 		it.mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
 		it.mappings file("mappings/create-conflict-fix.tiny")
 	})
-	modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+	modImplementation("net.fabricmc:fabric-loader:${loader_version}")
 
 	// dependencies
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 
 	// Create - dependencies are added transitively
 	modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
@@ -75,7 +75,7 @@ dependencies {
 	modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
 	for (String module in port_lib_modules.split(",")) {
-		modApi(include("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version"))
+		modImplementation(include "io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
 	}
 }
 

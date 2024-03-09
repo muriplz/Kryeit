@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MinecraftServerMixin",
+    "create.ClipboardBlockMixin",
     "create.ControlsInteractionBehaviourMixin",
+    "create.SchematicannonBlockEntityMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
     "create.ToolboxDisposeAllPacketMixin",

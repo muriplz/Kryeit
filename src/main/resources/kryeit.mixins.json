@@ -10,7 +10,6 @@
     "create.SchematicannonBlockEntityMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
-    "create.ToolboxDisposeAllPacketMixin",
     "create.ToolboxEquipPacketMixin",
     "create.TrainRelocationPacketMixin",
     "portinglib.NetworkHooksMixin"

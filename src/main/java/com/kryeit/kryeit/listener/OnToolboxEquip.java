@@ -11,6 +11,8 @@ import net.minecraft.util.math.BlockPos;
 public class OnToolboxEquip implements ToolboxEquipEvent {
 	@Override
 	public boolean onToolboxEquip(ServerPlayerEntity player, BlockPos toolboxPos) {
+		System.out.println(player + " equipped toolbox at " + toolboxPos);
+
 		return Utils.canBreakBlocks(player, List.of(toolboxPos));
 	}
 }

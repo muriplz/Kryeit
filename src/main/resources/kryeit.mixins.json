@@ -10,8 +10,7 @@
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
     "create.ToolboxEquipPacketMixin",
-    "create.TrainRelocationPacketMixin",
-    "portinglib.NetworkHooksMixin"
+    "create.TrainRelocationPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1

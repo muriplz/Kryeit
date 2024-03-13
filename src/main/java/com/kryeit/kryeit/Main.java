@@ -9,13 +9,11 @@ import com.kryeit.kryeit.compat.CompatAddon;
 import com.kryeit.kryeit.event.ControlsInteractionEvent;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
-import com.kryeit.kryeit.event.ServersideModdedScreenOpenEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
 import com.kryeit.kryeit.listener.OnKillGlue;
-import com.kryeit.kryeit.listener.OnServerScreenOpen;
 import com.kryeit.kryeit.listener.OnToolboxEquip;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.storage.TrainTrustManager;
@@ -37,7 +35,6 @@ public class Main implements ModInitializer {
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			ServersideModdedScreenOpenEvent.EVENT.register(new OnServerScreenOpen());
 			//SchematicannonPlaceEvent.EVENT.register(new OnSchematicannonPlace());
 
 			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {

@@ -76,9 +76,9 @@ dependencies {
 	modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
 	modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
-	for (String module in port_lib_modules.split(",")) {
-		modImplementation(include "io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
-	}
+	//for (String module in port_lib_modules.split(",")) {
+	//	modImplementation(include "io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
+	//}
 }
 
 processResources {

@@ -12,6 +12,8 @@ import net.minecraft.util.math.BlockPos;
 public class OnControlsInteract implements ControlsInteractionEvent {
 	@Override
 	public boolean onControlsInteraction(ServerPlayerEntity player, Train train, BlockPos trainPos) {
-		return Utils.canBreakBlocks(player, List.of(trainPos)) || (train.owner != null && train.owner.equals(player.getUuid()));
+		Utils.broadcast("Train controls interacted with at " + trainPos + "\nTrain owner: " + train.owner + "\nPlayer: " + player.getUuid());
+		if (train.owner == null) return true;
+		return Utils.canBreakBlocks(player, List.of(trainPos)) || train.owner.equals(player.getUuid());
 	}
 }

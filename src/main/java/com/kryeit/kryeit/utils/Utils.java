@@ -6,7 +6,10 @@ import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustTypes;
 
+import com.kryeit.kryeit.MinecraftServerSupplier;
+
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class Utils {
@@ -18,12 +21,16 @@ public class Utils {
 			if (claim == null || claim.isWilderness()) continue;
 
 			if (!claim.isUserTrusted(player.getUuid(), TrustTypes.BUILDER)){
-				if (!claim.canBreak(player, block, null)) {
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
 	}
 
+	public static void broadcast(String s) {
+		MinecraftServerSupplier.getServer().getPlayerManager().broadcast(
+				Text.literal(s),
+				false
+		);
+	}
 }

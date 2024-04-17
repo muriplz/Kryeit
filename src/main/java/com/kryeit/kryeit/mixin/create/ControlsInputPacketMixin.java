@@ -16,7 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 
 @Mixin(value = ControlsInputPacket.class, remap = false)
-public class ControlsInteractionBehaviourMixin {
+public class ControlsInputPacketMixin {
 
 	@Shadow
 	private int contraptionEntityId;

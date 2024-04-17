@@ -8,12 +8,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public interface ControlsInteractionEvent {
-    Event<ControlsInteractionEvent> EVENT = EventFactory.createArrayBacked(ControlsInteractionEvent.class, listeners -> (player, train, trainPos) -> {
+    Event<ControlsInteractionEvent> EVENT = EventFactory.createArrayBacked(ControlsInteractionEvent.class, listeners -> (player, train, controlsPos) -> {
         for (ControlsInteractionEvent listener : listeners) {
-            return listener.onControlsInteraction(player, train, trainPos);
+            return listener.onControlsInteraction(player, train, controlsPos);
         }
         return false;
     });
 
-    boolean onControlsInteraction(ServerPlayerEntity player, Train train, BlockPos trainPos);
+    boolean onControlsInteraction(ServerPlayerEntity player, Train train, BlockPos controlsPos);
 }

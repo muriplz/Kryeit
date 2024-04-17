@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 public class OnTrainRelocate implements TrainRelocationEvent {
 	@Override
 	public boolean onTrainRelocation(ServerPlayerEntity player, Train train, BlockPos trainPos) {
-		Utils.broadcast("Train relocated at " + trainPos);
 		return Utils.canBreakBlocks(player, List.of(trainPos)) || (train.owner != null && train.owner.equals(player.getUuid()));
 	}
 }

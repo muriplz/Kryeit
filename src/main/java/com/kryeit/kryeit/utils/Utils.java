@@ -5,7 +5,6 @@ import java.util.List;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustTypes;
-
 import com.kryeit.kryeit.MinecraftServerSupplier;
 
 import net.minecraft.server.network.ServerPlayerEntity;

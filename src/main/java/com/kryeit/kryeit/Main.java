@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
+import com.kryeit.kryeit.event.ClipboardEditEvent;
 import com.kryeit.kryeit.event.ControlsInteractionEvent;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
+import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
 import com.kryeit.kryeit.listener.OnKillGlue;
@@ -35,7 +37,7 @@ public class Main implements ModInitializer {
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			//SchematicannonPlaceEvent.EVENT.register(new OnSchematicannonPlace());
+			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
 
 			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
 				TrainTrust.register(dispatcher);

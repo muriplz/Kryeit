@@ -19,13 +19,19 @@ public class Utils {
 			claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(player.getWorld()), block.getX(), block.getY(), block.getZ());
 			if (claim == null || claim.isWilderness()) continue;
 
-			if (!claim.isUserTrusted(player.getUuid(), TrustTypes.BUILDER)){
+			if (!hasTrustInBlock(player, block)) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+	public static boolean hasTrustInBlock(ServerPlayerEntity player, BlockPos block) {
+		Claim claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(player.getWorld()), block.getX(), block.getY(), block.getZ());
+		if (claim == null || claim.isWilderness()) return true;
+
+		return claim.isUserTrusted(player.getUuid(), TrustTypes.BUILDER);
+	}
 	public static void broadcast(String s) {
 		MinecraftServerSupplier.getServer().getPlayerManager().broadcast(
 				Text.literal(s),

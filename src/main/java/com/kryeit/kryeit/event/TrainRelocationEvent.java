@@ -8,12 +8,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public interface TrainRelocationEvent {
-    Event<TrainRelocationEvent> EVENT = EventFactory.createArrayBacked(TrainRelocationEvent.class, listeners -> (player, train, trainPos) -> {
+    Event<TrainRelocationEvent> EVENT = EventFactory.createArrayBacked(TrainRelocationEvent.class, listeners -> (player, train, from, to) -> {
         for (TrainRelocationEvent listener : listeners) {
-            return listener.onTrainRelocation(player, train, trainPos);
+            return listener.onTrainRelocation(player, train, from, to);
         }
         return false;
     });
 
-    boolean onTrainRelocation(ServerPlayerEntity player, Train train, BlockPos trainPos);
+    boolean onTrainRelocation(ServerPlayerEntity player, Train train, BlockPos from, BlockPos to);
 }

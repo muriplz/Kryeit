@@ -6,7 +6,6 @@
   "mixins": [
     "MinecraftServerMixin",
     "create.ControlsInputPacketMixin",
-    "create.SchematicannonBlockEntityMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
     "create.ToolboxEquipPacketMixin",

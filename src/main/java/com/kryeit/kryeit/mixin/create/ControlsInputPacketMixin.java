@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.kryeit.kryeit.event.ControlsInteractionEvent;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.actors.trainControls.ControlsInputPacket;
+import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 
@@ -27,10 +28,17 @@ public class ControlsInputPacketMixin {
 	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onHandlePlayerInteraction(SimplePacketBase.Context context, CallbackInfoReturnable<Boolean> cir) {
 		Entity entity = context.sender().getWorld().getEntityById(contraptionEntityId);
-		if (entity == null) return;
-		Train train = Create.RAILWAYS.trains.get(entity.getUuid());
 
-		if (!ControlsInteractionEvent.EVENT.invoker().onControlsInteraction(context.sender(), train, controlsPos)) {
+		if (entity == null) return;
+
+		BlockPos pos = controlsPos;
+		Train train;
+		if (entity instanceof CarriageContraptionEntity carriageContraption) {
+			pos = pos.add(carriageContraption.getBlockPos());
+			train = Create.RAILWAYS.trains.get(carriageContraption.trainId);
+		} else return;
+
+		if (!ControlsInteractionEvent.EVENT.invoker().onControlsInteraction(context.sender(), train, pos)) {
 			cir.setReturnValue(false);
 		}
 	}

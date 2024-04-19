@@ -35,7 +35,11 @@ public class TrainRelocationPacketMixin {
 		Train train = Create.RAILWAYS.trains.get(trainId);
 		if (train == null)
 			return;
-		if (!TrainRelocationEvent.EVENT.invoker().onTrainRelocation(player, train, pos)) {
+
+		BlockPos from = train.carriages.stream().findFirst().get().anyAvailableEntity().getBlockPos();
+		BlockPos to = pos;
+
+		if (!TrainRelocationEvent.EVENT.invoker().onTrainRelocation(player, train, from, to)) {
 			ci.cancel();
 		}
 	}

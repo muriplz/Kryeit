@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.kryeit.kryeit.event.TrainDisassemblyEvent;
+import com.kryeit.kryeit.event.TrainAssemblyModeEvent;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 
@@ -22,17 +22,17 @@ public abstract class StationBlockMixin {
 	public abstract GlobalStation getStation();
 
 	@Inject(
-			method = "tryDisassembleTrain",
+			method = "enterAssemblyMode",
 			at = @At("HEAD"), cancellable = true
 	)
-	public void onUse(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
+	public void onAssemble(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
 		GlobalStation station = getStation();
 
 		if (station == null) {
 			return;
 		}
 
-		if (!TrainDisassemblyEvent.EVENT.invoker().onTrainDisassembly(sender, station.getPresentTrain(), station.getBlockEntityPos())) {
+		if (!TrainAssemblyModeEvent.EVENT.invoker().onTrainAssembly(sender, station.getPresentTrain(), station.getBlockEntityPos())) {
 			cir.setReturnValue(false);
 		}
 	}

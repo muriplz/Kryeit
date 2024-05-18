@@ -11,14 +11,14 @@ import com.kryeit.kryeit.event.ControlsInteractionEvent;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
-import com.kryeit.kryeit.event.TrainDisassemblyEvent;
+import com.kryeit.kryeit.event.TrainAssemblyModeEvent;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
 import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
 import com.kryeit.kryeit.listener.OnKillGlue;
 import com.kryeit.kryeit.listener.OnToolboxEquip;
-import com.kryeit.kryeit.listener.OnTrainDisassembly;
+import com.kryeit.kryeit.listener.OnTrainAssemblyMode;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 
@@ -40,7 +40,7 @@ public class Main implements ModInitializer {
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
-			TrainDisassemblyEvent.EVENT.register(new OnTrainDisassembly());
+			TrainAssemblyModeEvent.EVENT.register(new OnTrainAssemblyMode());
 
 			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
 				TrainTrust.register(dispatcher);

@@ -15,7 +15,7 @@ import com.simibubi.create.content.trains.station.StationBlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @Mixin(value = StationBlockEntity.class, remap = false)
-public abstract class StationBlockMixin {
+public abstract class StationBlockEntityMixin {
 
 	@Shadow
 	@Nullable
@@ -25,7 +25,7 @@ public abstract class StationBlockMixin {
 			method = "enterAssemblyMode",
 			at = @At("HEAD"), cancellable = true
 	)
-	public void onAssemble(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
+	public void onAssemblyMode(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
 		GlobalStation station = getStation();
 
 		if (station == null) {

@@ -7,7 +7,7 @@
     "MinecraftServerMixin",
     "create.ClipboardBlockEntityMixin",
     "create.ControlsInputPacketMixin",
-    "create.StationBlockMixin",
+    "create.StationBlockEntityMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
     "create.ToolboxEquipPacketMixin",

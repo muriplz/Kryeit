@@ -1,5 +1,9 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.ToolboxPickupEvent;
+
+import com.kryeit.kryeit.listener.OnToolboxPickup;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +43,7 @@ public class Main implements ModInitializer {
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
+			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
 			TrainAssemblyModeEvent.EVENT.register(new OnTrainAssemblyMode());
 

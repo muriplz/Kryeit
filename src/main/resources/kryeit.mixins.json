@@ -10,6 +10,7 @@
     "create.StationBlockEntityMixin",
     "create.SuperGlueRemovalPacketMixin",
     "create.SuperGlueSelectionPacketMixin",
+    "create.ToolboxBlockMixin",
     "create.ToolboxEquipPacketMixin",
     "create.TrainRelocationPacketMixin"
   ],

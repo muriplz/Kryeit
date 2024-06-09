@@ -33,11 +33,13 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "kryeit";
     public static final Logger LOGGER = LoggerFactory.getLogger("Create: Kryeit");
 
-	public static TrainTrustManager trainTrustManager = new TrainTrustManager();
+	public static TrainTrustManager trainTrustManager;
 	@Override
 	public void onInitialize() {
 
 		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
+			trainTrustManager = new TrainTrustManager();
+
 			GlueCreateEvent.EVENT.register(new OnCreateGlue());
 			GlueKillEvent.EVENT.register(new OnKillGlue());
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());

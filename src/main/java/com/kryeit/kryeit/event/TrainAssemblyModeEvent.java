@@ -12,7 +12,7 @@ public interface TrainAssemblyModeEvent {
         for (TrainAssemblyModeEvent listener : listeners) {
             return listener.onTrainAssembly(player, train, pos);
         }
-        return false;
+        return true;
     });
 
     boolean onTrainAssembly(ServerPlayerEntity player, Train train, BlockPos pos);

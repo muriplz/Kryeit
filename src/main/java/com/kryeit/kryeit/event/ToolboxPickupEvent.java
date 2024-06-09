@@ -10,7 +10,7 @@ public interface ToolboxPickupEvent {
         for (ToolboxPickupEvent listener : listeners) {
             return listener.onToolboxPickup(player, toolboxPos);
         }
-        return false;
+        return true;
     });
 
     boolean onToolboxPickup(ServerPlayerEntity player, BlockPos toolboxPos);

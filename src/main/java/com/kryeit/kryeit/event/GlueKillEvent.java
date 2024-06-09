@@ -12,7 +12,7 @@ public interface GlueKillEvent {
         for (GlueKillEvent listener : listeners) {
             return listener.onKillGlue(player, blocks);
         }
-        return false;
+        return true;
     });
 
     boolean onKillGlue(ServerPlayerEntity player, List<BlockPos> blocks);

@@ -12,7 +12,7 @@ public interface GlueCreateEvent {
         for (GlueCreateEvent listener : listeners) {
             return listener.onCreateGlue(player, blocks);
         }
-        return false;
+        return true;
     });
 
     boolean onCreateGlue(ServerPlayerEntity player, List<BlockPos> blocks);

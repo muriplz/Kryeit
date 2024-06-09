@@ -12,7 +12,7 @@ public interface TrainRelocationEvent {
         for (TrainRelocationEvent listener : listeners) {
             return listener.onTrainRelocation(player, train, from, to);
         }
-        return false;
+        return true;
     });
 
     boolean onTrainRelocation(ServerPlayerEntity player, Train train, BlockPos from, BlockPos to);

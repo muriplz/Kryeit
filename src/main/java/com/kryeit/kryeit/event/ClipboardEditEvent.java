@@ -12,7 +12,7 @@ public interface ClipboardEditEvent {
         for (ClipboardEditEvent listener : listeners) {
             return listener.onClipboardEdit(player, clipboard, pos);
         }
-        return false;
+        return true;
     });
 
     boolean onClipboardEdit(ServerPlayerEntity player, ClipboardBlockEntity clipboard, BlockPos pos);

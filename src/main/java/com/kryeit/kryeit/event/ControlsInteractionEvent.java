@@ -12,7 +12,7 @@ public interface ControlsInteractionEvent {
         for (ControlsInteractionEvent listener : listeners) {
             return listener.onControlsInteraction(player, train, controlsPos);
         }
-        return false;
+        return true;
     });
 
     boolean onControlsInteraction(ServerPlayerEntity player, Train train, BlockPos controlsPos);

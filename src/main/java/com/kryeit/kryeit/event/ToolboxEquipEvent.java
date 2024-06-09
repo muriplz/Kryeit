@@ -10,7 +10,7 @@ public interface ToolboxEquipEvent {
         for (ToolboxEquipEvent listener : listeners) {
             return listener.onToolboxEquip(player, toolboxPos);
         }
-        return false;
+        return true;
     });
 
     boolean onToolboxEquip(ServerPlayerEntity player, BlockPos toolboxPos);

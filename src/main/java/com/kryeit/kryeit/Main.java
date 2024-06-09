@@ -1,9 +1,5 @@
 package com.kryeit.kryeit;
 
-import com.kryeit.kryeit.event.ToolboxPickupEvent;
-
-import com.kryeit.kryeit.listener.OnToolboxPickup;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,17 +7,21 @@ import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
 import com.kryeit.kryeit.event.ClipboardEditEvent;
-import com.kryeit.kryeit.event.ControlsInteractionEvent;
+import com.kryeit.kryeit.event.ControlsInteractEvent;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.kryeit.kryeit.event.GlueKillEvent;
+import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
+import com.kryeit.kryeit.event.ToolboxPickupEvent;
 import com.kryeit.kryeit.event.TrainAssemblyModeEvent;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
 import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
 import com.kryeit.kryeit.listener.OnKillGlue;
+import com.kryeit.kryeit.listener.OnScheduleEntityInteract;
 import com.kryeit.kryeit.listener.OnToolboxEquip;
+import com.kryeit.kryeit.listener.OnToolboxPickup;
 import com.kryeit.kryeit.listener.OnTrainAssemblyMode;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.storage.TrainTrustManager;
@@ -41,11 +41,12 @@ public class Main implements ModInitializer {
 			GlueCreateEvent.EVENT.register(new OnCreateGlue());
 			GlueKillEvent.EVENT.register(new OnKillGlue());
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
-			ControlsInteractionEvent.EVENT.register(new OnControlsInteract());
+			ControlsInteractEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
 			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
 			TrainAssemblyModeEvent.EVENT.register(new OnTrainAssemblyMode());
+			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
 
 			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
 				TrainTrust.register(dispatcher);

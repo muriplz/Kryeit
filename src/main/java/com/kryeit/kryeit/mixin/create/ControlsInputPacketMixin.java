@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.kryeit.kryeit.event.ControlsInteractionEvent;
+import com.kryeit.kryeit.event.ControlsInteractEvent;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.actors.trainControls.ControlsInputPacket;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
@@ -38,7 +38,7 @@ public class ControlsInputPacketMixin {
 			train = Create.RAILWAYS.trains.get(carriageContraption.trainId);
 		} else return;
 
-		if (!ControlsInteractionEvent.EVENT.invoker().onControlsInteraction(context.sender(), train, pos)) {
+		if (!ControlsInteractEvent.EVENT.invoker().onControlsInteract(context.sender(), train, pos)) {
 			cir.setReturnValue(false);
 		}
 	}

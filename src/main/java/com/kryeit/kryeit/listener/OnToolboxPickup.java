@@ -2,7 +2,6 @@ package com.kryeit.kryeit.listener;
 
 import java.util.List;
 
-import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.kryeit.kryeit.event.ToolboxPickupEvent;
 import com.kryeit.kryeit.utils.Utils;
 

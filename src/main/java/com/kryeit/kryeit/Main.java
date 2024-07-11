@@ -1,5 +1,9 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.PotatoCannonShootEvent;
+
+import com.kryeit.kryeit.listener.OnPotatoCannonShoot;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +53,8 @@ public class Main implements ModInitializer {
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
 			TrainAssemblyModeEvent.EVENT.register(new OnTrainAssemblyMode());
 			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
+
+			PotatoCannonShootEvent.EVENT.register(new OnPotatoCannonShoot());
 
 			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
 				TrainTrust.register(dispatcher);

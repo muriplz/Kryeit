@@ -6,8 +6,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
-import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.content.trains.entity.CarriageContraption;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.ScheduleItemEntityInteraction;
@@ -32,13 +30,7 @@ public class ScheduleItemEntityInteractionMixin {
 		if (!(rootVehicle instanceof CarriageContraptionEntity cce))
 			return;
 
-		Contraption contraption = cce.getContraption();
-		if (!(contraption instanceof CarriageContraption cc))
-			return;
-
 		Train train = cce.getCarriage().train;
-		if (train == null)
-			return;
 
 		Vec3d vec3d = hitResult.getPos();
 		BlockPos pos = new BlockPos(new Vec3i((int) vec3d.x, (int) vec3d.y, (int) vec3d.z));

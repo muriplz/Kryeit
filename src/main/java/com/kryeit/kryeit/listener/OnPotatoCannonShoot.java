@@ -1,17 +1,12 @@
 package com.kryeit.kryeit.listener;
 
-import com.kryeit.kryeit.event.ClipboardEditEvent;
+import java.util.Arrays;
+import java.util.List;
+
 import com.kryeit.kryeit.event.PotatoCannonShootEvent;
-import com.kryeit.kryeit.utils.Utils;
-import com.simibubi.create.content.equipment.clipboard.ClipboardBlockEntity;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class OnPotatoCannonShoot implements PotatoCannonShootEvent {
 

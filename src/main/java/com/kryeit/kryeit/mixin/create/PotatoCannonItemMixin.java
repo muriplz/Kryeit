@@ -1,8 +1,14 @@
 package com.kryeit.kryeit.mixin.create;
 
+import java.util.Optional;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import com.kryeit.kryeit.event.PotatoCannonShootEvent;
 import com.simibubi.create.content.equipment.potatoCannon.PotatoCannonItem;
-
 import com.simibubi.create.content.equipment.potatoCannon.PotatoProjectileTypeManager;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,21 +18,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 @Mixin(PotatoCannonItem.class)
 public class PotatoCannonItemMixin {
 
 	@Inject(
-			method="use",
-			at=@At("HEAD"),
+			method = "use",
+			at = @At("HEAD"),
 			cancellable = true
 	)
 	private void onShoot(World world, PlayerEntity player, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {

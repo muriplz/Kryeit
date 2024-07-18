@@ -24,7 +24,7 @@ public class TrainRelocationPacketMixin {
 	UUID trainId;
 
 	@Shadow
-	private BlockPos pos;
+	BlockPos pos;
 
 	@Inject(method = "lambda$handle$2", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci){

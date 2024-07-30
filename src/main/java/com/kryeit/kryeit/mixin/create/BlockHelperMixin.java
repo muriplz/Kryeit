@@ -28,7 +28,7 @@ public class BlockHelperMixin {
 	)
 	private static void onPlaceSchematicBlock(World world, BlockState state, BlockPos target, ItemStack stack, NbtCompound data, CallbackInfo ci) {
 		BlockEntity loaded = BlockEntity.createFromNbt(target, state, data);
-		if (loaded != null) {
+		if (loaded == null) {
 			ci.cancel();
 		}
 	}

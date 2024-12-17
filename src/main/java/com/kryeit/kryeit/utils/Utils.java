@@ -23,7 +23,7 @@ public class Utils {
 		}
 		return true;
 	}
-	
+
 	public static boolean canBreakBlocks(ServerPlayerEntity player, List<BlockPos> blocks) {
 		Claim claim;
 

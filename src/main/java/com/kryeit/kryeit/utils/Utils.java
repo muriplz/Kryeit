@@ -12,6 +12,18 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class Utils {
+	public static boolean isWilderness(List<BlockPos> blocks) {
+		Claim claim;
+
+		for (BlockPos block : blocks) {
+			claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(MinecraftServerSupplier.getServer().getOverworld()), block.getX(), block.getY(), block.getZ());
+			if (claim == null || claim.isWilderness()) continue;
+
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean canBreakBlocks(ServerPlayerEntity player, List<BlockPos> blocks) {
 		Claim claim;
 

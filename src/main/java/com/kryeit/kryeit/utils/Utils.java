@@ -1,6 +1,7 @@
 package com.kryeit.kryeit.utils;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
@@ -12,6 +13,18 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class Utils {
+
+	public static UUID getClaimOwner(List<BlockPos> blocks) {
+		Claim claim;
+
+		for (BlockPos block : blocks) {
+			claim = GriefDefender.getCore().getClaimAt(GriefDefender.getCore().getWorldUniqueId(MinecraftServerSupplier.getServer().getOverworld()), block.getX(), block.getY(), block.getZ());
+			if (claim == null || claim.isWilderness()) continue;
+
+			return claim.getOwnerUniqueId();
+		}
+		return null;
+	}
 	public static boolean isWilderness(List<BlockPos> blocks) {
 		Claim claim;
 

@@ -7,21 +7,32 @@ import com.kryeit.kryeit.event.TrainAssemblyModeEvent;
 import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.entity.Train;
 
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 
 public class OnTrainAssemblyMode implements TrainAssemblyModeEvent {
 	@Override
 	public boolean onTrainAssembly(ServerPlayerEntity player, Train train, BlockPos pos) {
 
+		if (Permissions.check(player, "group.staff")) {
+			return true;
+		}
+
+		if (train.owner == null) {
+			// Train inside a claim
+			train.owner = Utils.getClaimOwner(List.of(pos));
+		}
+		
 		// Check if the player can break blocks and it's not wilderness
 		if (Utils.canBreakBlocks(player, List.of(pos)) && !Utils.isWilderness(List.of(pos))) {
 			return true;
 		}
 
 		// Check if the player is the owner or a trusted player
-		if (train.owner != null && (train.owner.equals(player.getUuid()) ||
+		if ((train.owner.equals(player.getUuid()) ||
 				Main.trainTrustManager.getTrustedPlayers(train.owner).contains(player.getUuid()))) {
 			return true;
 		}

@@ -1,5 +1,7 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.listener.OnFilterInteract;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +60,7 @@ public class Main implements ModInitializer {
 			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
 			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
 			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
+			OnFilterInteract.EVENT.register(new OnFilterInteract());
 			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
 			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
 

@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MinecraftServerMixin",
+    "create.FilteringBehaviourMixin",
     "create.BlockHelperMixin",
     "create.ClipboardBlockEntityMixin",
     "create.ControlsInputPacketMixin",

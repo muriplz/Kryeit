@@ -7,9 +7,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public interface TrainAssemblyModeEvent {
-    Event<TrainAssemblyModeEvent> EVENT = EventFactory.createArrayBacked(TrainAssemblyModeEvent.class, listeners -> (player, train, pos) -> {
-        for (TrainAssemblyModeEvent listener : listeners) {
+public interface TrainAssembleEvent {
+    Event<TrainAssembleEvent> EVENT = EventFactory.createArrayBacked(TrainAssembleEvent.class, listeners -> (player, train, pos) -> {
+        for (TrainAssembleEvent listener : listeners) {
             return listener.onTrainAssembly(player, train, pos);
         }
         return true;

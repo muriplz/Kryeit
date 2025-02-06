@@ -14,9 +14,11 @@ import com.kryeit.kryeit.event.PotatoCannonShootEvent;
 import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.kryeit.kryeit.event.ToolboxPickupEvent;
-import com.kryeit.kryeit.event.TrainAssemblyModeEvent;
-import com.kryeit.kryeit.event.TrainStorageInteractEvent;
+import com.kryeit.kryeit.event.TrainAssembleEvent;
+import com.kryeit.kryeit.event.TrainChangeNameEvent;
+import com.kryeit.kryeit.event.TrainDisassembleEvent;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
+import com.kryeit.kryeit.event.TrainStorageInteractEvent;
 import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
@@ -25,9 +27,11 @@ import com.kryeit.kryeit.listener.OnPotatoCannonShoot;
 import com.kryeit.kryeit.listener.OnScheduleEntityInteract;
 import com.kryeit.kryeit.listener.OnToolboxEquip;
 import com.kryeit.kryeit.listener.OnToolboxPickup;
-import com.kryeit.kryeit.listener.OnTrainAssemblyMode;
-import com.kryeit.kryeit.listener.OnTrainStorageInteract;
+import com.kryeit.kryeit.listener.OnTrainAssemble;
+import com.kryeit.kryeit.listener.OnTrainChangeName;
+import com.kryeit.kryeit.listener.OnTrainDisassemble;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
+import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 
 import net.fabricmc.api.ModInitializer;
@@ -51,7 +55,9 @@ public class Main implements ModInitializer {
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
 			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
-			TrainAssemblyModeEvent.EVENT.register(new OnTrainAssemblyMode());
+			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
+			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
+			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
 			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
 			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
 

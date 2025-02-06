@@ -8,9 +8,11 @@ import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustTypes;
 import com.kryeit.kryeit.MinecraftServerSupplier;
 
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class Utils {
 
@@ -63,4 +65,8 @@ public class Utils {
 				false
 		);
 	}
+
+    public static ServerPlayerEntity getClosestPlayer(BlockPos blockEntityPos, RegistryKey<World> blockEntityDimension) {
+		return (ServerPlayerEntity) MinecraftServerSupplier.getServer().getWorld(blockEntityDimension).getClosestPlayer(blockEntityPos.getX(), blockEntityPos.getY(), blockEntityPos.getZ(), 10, false);
+    }
 }

@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 public class OnTrainDisassemble implements TrainDisassembleEvent {
 	@Override
 	public boolean onTrainDisassembly(ServerPlayerEntity player, Train train, BlockPos pos) {
-		if (Permissions.check(player, "group.staff")) {
+		if (player != null && Permissions.check(player, "group.staff")) {
 			return true;
 		}
 

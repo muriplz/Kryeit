@@ -1,5 +1,6 @@
 package com.kryeit.kryeit;
 
+import com.kryeit.kryeit.event.FilterInteractEvent;
 import com.kryeit.kryeit.listener.OnFilterInteract;
 
 import org.slf4j.Logger;
@@ -55,12 +56,12 @@ public class Main implements ModInitializer {
 			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
 			ControlsInteractEvent.EVENT.register(new OnControlsInteract());
 			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
 			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
+			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
 			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
 			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
 			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
-			OnFilterInteract.EVENT.register(new OnFilterInteract());
+			FilterInteractEvent.EVENT.register(new OnFilterInteract());
 			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
 			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
 

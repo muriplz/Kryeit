@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 public class OnTrainAssemble implements TrainAssembleEvent {
 	@Override
 	public boolean onTrainAssembly(ServerPlayerEntity player, Train train, BlockPos pos) {
-		if (player != null && Permissions.check(player, "group.staff")) {
+		if (Permissions.check(player, "group.staff")) {
 			return true;
 		}
 

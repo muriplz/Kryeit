@@ -18,7 +18,11 @@ import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 @Mixin(value = StationBlockEntity.class, remap = false)
 public abstract class StationBlockEntityMixin {
@@ -59,7 +63,15 @@ public abstract class StationBlockEntityMixin {
 			return;
 		}
 
-		ServerPlayerEntity player = MinecraftServerSupplier.getServer().getPlayerManager().getPlayer(playerUUID);
+		RegistryKey<World> dimensionKey = station.getBlockEntityDimension();
+		ServerWorld world = MinecraftServerSupplier.getServer().getWorld(dimensionKey);
+
+		if (world == null) return;
+
+		Entity entity = world.getEntity(playerUUID);
+
+		if (!(entity instanceof ServerPlayerEntity player)) return;
+
 		if (!TrainAssembleEvent.EVENT.invoker().onTrainAssembly(player, station.getPresentTrain(), station.getBlockEntityPos())) {
 			ci.cancel();
 		}

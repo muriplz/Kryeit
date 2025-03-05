@@ -1,7 +1,5 @@
 package com.kryeit.kryeit.event;
 
-import com.simibubi.create.content.equipment.clipboard.ClipboardBlockEntity;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.network.ServerPlayerEntity;

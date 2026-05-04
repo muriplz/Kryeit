@@ -9,6 +9,7 @@
     "create.ClipboardBlockEntityMixin",
     "create.ControlsInputPacketMixin",
     "create.FilteringBehaviourMixin",
+    "create.MixinChainPackageInteractionPacket",
     "create.MountedStorageManagerMixin",
     "create.PotatoCannonItemMixin",
     "create.ScheduleItemEntityInteractionMixin",

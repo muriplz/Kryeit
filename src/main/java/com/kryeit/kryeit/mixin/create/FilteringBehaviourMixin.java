@@ -1,5 +1,7 @@
 package com.kryeit.kryeit.mixin.create;
 
+import net.minecraft.util.hit.BlockHitResult;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,7 +29,7 @@ public abstract class FilteringBehaviourMixin extends BlockEntityBehaviour {
 			method = "onShortInteract",
 			at = @At("HEAD"),
 			cancellable = true)
-	public void onShortInteract(PlayerEntity player, Hand hand, Direction side, CallbackInfo ci) {
+	public void onShortInteract(PlayerEntity player, Hand hand, Direction side, BlockHitResult hitResult, CallbackInfo ci) {
 		SmartBlockEntity be = this.blockEntity;
 
 		BlockPos pos = be.getPos();

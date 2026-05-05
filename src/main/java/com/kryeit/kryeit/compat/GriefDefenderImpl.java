@@ -3,8 +3,8 @@ package com.kryeit.kryeit.compat;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
 
 public class GriefDefenderImpl {
 
@@ -28,7 +28,7 @@ public class GriefDefenderImpl {
 		return blockPositions;
 	}
 
-	public static List<BlockPos> getBlockPositionsInAABB(Box aabb) {
+	public static List<BlockPos> getBlockPositionsInAABB(AABB aabb) {
 		List<BlockPos> blockPositions = new ArrayList<>();
 		// Explicitly cast the double values to int, flooring them in the process
 		BlockPos min = new BlockPos((int) Math.round(aabb.minX), (int) Math.round(aabb.minY), (int) Math.round(aabb.minZ));

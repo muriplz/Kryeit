@@ -1,25 +1,10 @@
 package com.kryeit.kryeit;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
-import com.kryeit.kryeit.event.ClipboardEditEvent;
-import com.kryeit.kryeit.event.ControlsInteractEvent;
-import com.kryeit.kryeit.event.FilterInteractEvent;
-import com.kryeit.kryeit.event.GlueCreateEvent;
-import com.kryeit.kryeit.event.GlueKillEvent;
-import com.kryeit.kryeit.event.PotatoCannonShootEvent;
-import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
-import com.kryeit.kryeit.event.ToolboxEquipEvent;
-import com.kryeit.kryeit.event.ToolboxPickupEvent;
-import com.kryeit.kryeit.event.TrainAssembleEvent;
-import com.kryeit.kryeit.event.TrainChangeNameEvent;
-import com.kryeit.kryeit.event.TrainDisassembleEvent;
-import com.kryeit.kryeit.event.TrainRelocationEvent;
-import com.kryeit.kryeit.event.TrainStorageInteractEvent;
 import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
@@ -35,41 +20,52 @@ import com.kryeit.kryeit.listener.OnTrainDisassemble;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.logging.LogUtils;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.CommandSourceStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
-public class Main implements ModInitializer {
-    public static final String MOD_ID = "kryeit";
-    public static final Logger LOGGER = LoggerFactory.getLogger("Create: Kryeit");
+
+@Mod(Main.MOD_ID)
+public class Main {
+	public static final String MOD_ID = "kryeit";
+	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public static TrainTrustManager trainTrustManager;
-	@Override
-	public void onInitialize() {
+	public static IEventBus MOD_BUS;
 
-		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
-			trainTrustManager = new TrainTrustManager();
+	public Main(IEventBus modBus) {
+		Main.MOD_BUS = modBus;
+		modBus.register(this);
+		if (!CompatAddon.GRIEF_DEFENDER.isLoaded()) return;
 
-			GlueCreateEvent.EVENT.register(new OnCreateGlue());
-			GlueKillEvent.EVENT.register(new OnKillGlue());
-			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
-			ControlsInteractEvent.EVENT.register(new OnControlsInteract());
-			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
-			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
-			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
-			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
-			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
-			FilterInteractEvent.EVENT.register(new OnFilterInteract());
-			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
-			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
+		trainTrustManager = new TrainTrustManager();
 
-			PotatoCannonShootEvent.EVENT.register(new OnPotatoCannonShoot());
+		modBus.register(OnCreateGlue.class);
+		modBus.register(OnKillGlue.class);
+		modBus.register(OnTrainRelocate.class);
+		modBus.register(OnControlsInteract.class);
+		modBus.register(OnToolboxEquip.class);
+		modBus.register(OnClipboardEdit.class);
+		modBus.register(OnToolboxPickup.class);
+		modBus.register(OnTrainAssemble.class);
+		modBus.register(OnTrainDisassemble.class);
+		modBus.register(OnTrainChangeName.class);
+		modBus.register(OnFilterInteract.class);
+		modBus.register(OnScheduleEntityInteract.class);
+		modBus.register(OnTrainStorageInteract.class);
+		modBus.register(OnPotatoCannonShoot.class);
+	}
 
-			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
-				TrainTrust.register(dispatcher);
-				TrainUntrust.register(dispatcher);
-			});
-		}
+	@SubscribeEvent
+	public void onCommandRegistration(RegisterCommandsEvent event) {
+		CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+
+		TrainTrust.register(dispatcher);
+		TrainUntrust.register(dispatcher);
 	}
 }

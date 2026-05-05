@@ -1,16 +1,19 @@
 package com.kryeit.kryeit.listener;
 
+
 import java.util.List;
 
+import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.kryeit.kryeit.utils.Utils;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-public class OnToolboxEquip implements ToolboxEquipEvent {
-	@Override
-	public boolean onToolboxEquip(ServerPlayerEntity player, BlockPos toolboxPos) {
-		return Utils.canBreakBlocks(player, List.of(toolboxPos));
+@EventBusSubscriber(modid = Main.MOD_ID)
+public class OnToolboxEquip {
+	@SubscribeEvent
+	public static void onToolboxEquip(ToolboxEquipEvent event) {
+		event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.toolboxPos())));
 	}
 }

@@ -2,18 +2,25 @@ package com.kryeit.kryeit.event;
 
 import java.util.List;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-public interface GlueCreateEvent {
-    Event<GlueCreateEvent> EVENT = EventFactory.createArrayBacked(GlueCreateEvent.class, listeners -> (player, blocks) -> {
-        for (GlueCreateEvent listener : listeners) {
-            return listener.onCreateGlue(player, blocks);
-        }
-        return true;
-    });
+public class GlueCreateEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final List<BlockPos> blocks;
 
-    boolean onCreateGlue(ServerPlayerEntity player, List<BlockPos> blocks);
+	public GlueCreateEvent(ServerPlayer player, List<BlockPos> blocks) {
+		this.player = player;
+		this.blocks = blocks;
+	}
+
+	public List<BlockPos> blocks() {
+		return blocks;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
 }

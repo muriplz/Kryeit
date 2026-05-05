@@ -1,17 +1,25 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
-public interface ToolboxPickupEvent {
-    Event<ToolboxPickupEvent> EVENT = EventFactory.createArrayBacked(ToolboxPickupEvent.class, listeners -> (player, toolboxPos) -> {
-        for (ToolboxPickupEvent listener : listeners) {
-            return listener.onToolboxPickup(player, toolboxPos);
-        }
-        return true;
-    });
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-    boolean onToolboxPickup(ServerPlayerEntity player, BlockPos toolboxPos);
+public class ToolboxPickupEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final BlockPos toolboxPos;
+
+	public ToolboxPickupEvent(ServerPlayer player, BlockPos toolboxPos) {
+		this.player = player;
+		this.toolboxPos = toolboxPos;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
+
+	public BlockPos toolboxPos() {
+		return toolboxPos;
+	}
 }

@@ -1,17 +1,31 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-public interface FilterInteractEvent {
-    Event<FilterInteractEvent> EVENT = EventFactory.createArrayBacked(FilterInteractEvent.class, listeners -> (player, pos) -> {
-        for (FilterInteractEvent listener : listeners) {
-            return listener.onFilterInteract(player, pos);
-        }
-        return true;
-    });
+public class FilterInteractEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final BlockPos pos;
+	private final BlockState state;
 
-    boolean onFilterInteract(ServerPlayerEntity player, BlockPos pos);
+	public FilterInteractEvent(ServerPlayer player, BlockPos pos, BlockState state) {
+		this.player = player;
+		this.pos = pos;
+		this.state = state;
+	}
+
+	public BlockState state() {
+		return state;
+	}
+
+	public BlockPos pos() {
+		return pos;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
 }

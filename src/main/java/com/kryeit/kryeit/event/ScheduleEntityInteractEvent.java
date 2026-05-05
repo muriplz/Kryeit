@@ -2,18 +2,32 @@ package com.kryeit.kryeit.event;
 
 import com.simibubi.create.content.trains.entity.Train;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-public interface ScheduleEntityInteractEvent {
-    Event<ScheduleEntityInteractEvent> EVENT = EventFactory.createArrayBacked(ScheduleEntityInteractEvent.class, listeners -> (player, train, seatPos) -> {
-        for (ScheduleEntityInteractEvent listener : listeners) {
-            return listener.onScheduleEntityInteract(player, train, seatPos);
-        }
-        return true;
-    });
 
-    boolean onScheduleEntityInteract(ServerPlayerEntity player, Train train, BlockPos seatPos);
+public class ScheduleEntityInteractEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final Train train;
+	private final BlockPos seatPos;
+
+	public ScheduleEntityInteractEvent(ServerPlayer player, Train train, BlockPos seatPos) {
+		this.player = player;
+		this.train = train;
+		this.seatPos = seatPos;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
+
+	public Train train() {
+		return train;
+	}
+
+	public BlockPos seatPos() {
+		return seatPos;
+	}
 }

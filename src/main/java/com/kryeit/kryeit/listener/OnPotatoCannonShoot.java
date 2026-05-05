@@ -1,14 +1,17 @@
 package com.kryeit.kryeit.listener;
 
+
+import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.PotatoCannonShootEvent;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-public class OnPotatoCannonShoot implements PotatoCannonShootEvent {
+@EventBusSubscriber(modid = Main.MOD_ID)
+public class OnPotatoCannonShoot {
 
-	@Override
-	public boolean onCannonShoot(ServerPlayerEntity player, ItemStack ammo) {
+	@SubscribeEvent
+	public static void onCannonShoot(PotatoCannonShootEvent event) {
 
 //		List<String> bannedAmmo = Arrays.asList(
 //				"item.create.blaze_cake",
@@ -17,7 +20,5 @@ public class OnPotatoCannonShoot implements PotatoCannonShootEvent {
 //
 //		String key = ammo.getTranslationKey();
 //        return !bannedAmmo.contains(key);
-
-		return true;
-    }
+	}
 }

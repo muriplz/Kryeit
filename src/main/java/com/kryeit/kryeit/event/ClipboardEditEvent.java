@@ -2,18 +2,30 @@ package com.kryeit.kryeit.event;
 
 import com.simibubi.create.content.equipment.clipboard.ClipboardBlockEntity;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
-public interface ClipboardEditEvent {
-    Event<ClipboardEditEvent> EVENT = EventFactory.createArrayBacked(ClipboardEditEvent.class, listeners -> (player, clipboard, pos) -> {
-        for (ClipboardEditEvent listener : listeners) {
-            return listener.onClipboardEdit(player, clipboard, pos);
-        }
-        return true;
-    });
+public class ClipboardEditEvent extends BlockEvent implements ICancellableEvent {
+	private final Player player;
+	private final ClipboardBlockEntity clipboard;
 
-    boolean onClipboardEdit(ServerPlayerEntity player, ClipboardBlockEntity clipboard, BlockPos pos);
+	public ClipboardEditEvent(ServerLevel level, BlockPos pos, BlockState state, ServerPlayer player, ClipboardBlockEntity clipboard) {
+		super(level, pos, state);
+
+		this.player = player;
+		this.clipboard = clipboard;
+	}
+
+	public Player player() {
+		return player;
+	}
+
+	public ClipboardBlockEntity clipboard() {
+		return clipboard;
+	}
 }

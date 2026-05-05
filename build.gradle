@@ -1,122 +1,137 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version '1.16-SNAPSHOT'
+	id 'java-library'
+	id 'eclipse'
+	id 'idea'
 	id 'maven-publish'
+	id 'net.neoforged.moddev' version '2.0.123'
 }
 
-version = project.mod_version
-group = project.maven_group
+version = mod_version
+group = maven_group
 
 base {
-	archivesName = project.archives_base_name
+	archivesName = archives_base_name
 }
 
-loom {
-	splitEnvironmentSourceSets()
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-	mods {
-		"kryeit" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
-}
 repositories {
-	mavenCentral()
-	maven {
-		name = 'aikar'
-		url = 'https://repo.aikar.co/content/groups/aikar'
-	}
+	mavenLocal()
+
+	// GriefDefender
 	maven {
 		name = 'GriefDefender'
 		url = 'https://repo.glaremasters.me/repository/bloodshot'
 	}
-	maven {
-		name = 'sonatype_releases'
-		url = 'https://oss.sonatype.org/content/repositories/releases'
-	}
-	maven {
-		name = 'sonatype_snapshots'
-		url = 'https://oss.sonatype.org/content/repositories/snapshots'
-	}
 
-	maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
+	// Permissions API
+	maven {
+		name = "KTTMaven"
+		url = "https://maven.kessokuteatime.work/releases"
+	}
 
 	maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
-	maven { url = "https://maven.tterrag.com" } // Registrate
-	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
-	maven { url = "https://repo.phoenix616.dev" }
-	maven { url = "https://mvn.devos.one/snapshots" }
-	maven { url = "https://mvn.devos.one/releases" }
-	maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
+	maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:${minecraft_version}")
-	modImplementation("net.fabricmc:fabric-loader:${loader_version}")
-	modApi("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
-
 	compileOnly "com.griefdefender:api:${griefdefender_version}"
-
-	mappings(loom.layered {
-		it.mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
-	})
-
-	// dependencies
-
-
-	// Create - dependencies are added transitively
-	modImplementation("com.simibubi.create:create-fabric:${create_version}")
-
-	// Development QOL
-	include(modImplementation("me.lucko:fabric-permissions-api:0.3.1"))
-
-	//for (String module in port_lib_modules.split(",")) {
-	//	modImplementation(include "io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
-	//}
+	compileOnly("com.simibubi.create:create-1.21.1:${create_version}")
+	compileOnly("org.thinkingstudio:neopermissions:0.1.1+mc1.21.1")
 }
 
-processResources {
-	inputs.property "version", project.version
+neoForge {
+	// Specify the version of NeoForge to use.
+	version = project.neo_version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+	parchment {
+		mappingsVersion = parchment_mappings_version
+		minecraftVersion = parchment_minecraft_version
+	}
+
+	// This line is optional. Access Transformers are automatically detected
+	// accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
+	// Default run configurations.
+	// These can be tweaked, removed, or duplicated as needed.
+	runs {
+		client {
+			client()
+
+			// Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
+
+		server {
+			server()
+			programArgument '--nogui'
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
+
+		// This run config launches GameTestServer and runs all registered gametests, then exits.
+		// By default, the server will crash when no gametests are provided.
+		// The gametest system is also enabled by default for other run configs under the /test command.
+		gameTestServer {
+			type = "gameTestServer"
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
+
+		// applies to all the run configs above
+		configureEach {
+			// Recommended logging data for a userdev environment
+			// The markers can be added/remove as needed separated by commas.
+			// "SCAN": For mods scan.
+			// "REGISTRIES": For firing of registry events.
+			// "REGISTRYDUMP": For getting the contents of all registries.
+			systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+			// Recommended logging level for the console
+			// You can set various levels here.
+			// Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+			logLevel = org.slf4j.event.Level.DEBUG
+		}
+	}
+
+	mods {
+		// define mod <-> source bindings
+		// these are used to tell the game which sources are for which mod
+		// mostly optional in a single mod project
+		// but multi mod projects should define one per mod
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+		}
+	}
+}
+
+tasks.withType(ProcessResources).configureEach {
+	var replaceProperties = [
+			minecraft_version      : minecraft_version,
+			minecraft_version_range: minecraft_version_range,
+			neo_version            : neo_version,
+//			neo_version_range      : neo_version_range,
+//			loader_version_range   : loader_version_range,
+			mod_id                 : mod_id,
+			mod_name               : mod_name,
+//			mod_license            : mod_license,
+			mod_version            : mod_version,
+//			mod_authors            : mod_authors,
+//			mod_description        : mod_description
+	]
+	inputs.properties replaceProperties
+
+	filesMatching(['META-INF/neoforge.mods.toml']) {
+		expand replaceProperties
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
 	}
 }

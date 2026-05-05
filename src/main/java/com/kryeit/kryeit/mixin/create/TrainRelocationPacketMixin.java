@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.TrainRelocationEvent;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
@@ -17,6 +16,7 @@ import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(value = TrainRelocationPacket.class, remap = false)
 public class TrainRelocationPacketMixin {
@@ -35,7 +35,7 @@ public class TrainRelocationPacketMixin {
 		BlockPos from = train.carriages.stream().findFirst().get().anyAvailableEntity().blockPosition();
 		BlockPos to = pos;
 
-		TrainRelocationEvent event = Main.MOD_BUS.post(new TrainRelocationEvent(sender, train, from, to));
+		TrainRelocationEvent event = NeoForge.EVENT_BUS.post(new TrainRelocationEvent(sender, train, from, to));
 		if (event.isCanceled()) ci.cancel();
 	}
 }

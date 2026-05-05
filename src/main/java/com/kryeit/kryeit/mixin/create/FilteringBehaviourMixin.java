@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.FilterInteractEvent;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -18,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(FilteringBehaviour.class)
 public abstract class FilteringBehaviourMixin extends BlockEntityBehaviour {
@@ -34,7 +34,7 @@ public abstract class FilteringBehaviourMixin extends BlockEntityBehaviour {
 		SmartBlockEntity be = this.blockEntity;
 		BlockPos pos = be.getBlockPos();
 
-		FilterInteractEvent event = Main.MOD_BUS.post(new FilterInteractEvent((ServerPlayer) player, pos, be.getBlockState()));
+		FilterInteractEvent event = NeoForge.EVENT_BUS.post(new FilterInteractEvent((ServerPlayer) player, pos, be.getBlockState()));
 		if (event.isCanceled()) ci.cancel();
 	}
 

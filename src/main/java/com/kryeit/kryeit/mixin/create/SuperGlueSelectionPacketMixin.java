@@ -25,13 +25,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.compat.GriefDefenderImpl;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(SuperGlueSelectionPacket.class)
 public class SuperGlueSelectionPacketMixin {
@@ -44,7 +44,7 @@ public class SuperGlueSelectionPacketMixin {
 
 	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
 	public void onActivate(ServerPlayer player, CallbackInfo ci) {
-		GlueCreateEvent event = Main.MOD_BUS.post(new GlueCreateEvent(player, GriefDefenderImpl.getBlockPositionsInCube(from, to)));
+		GlueCreateEvent event = NeoForge.EVENT_BUS.post(new GlueCreateEvent(player, GriefDefenderImpl.getBlockPositionsInCube(from, to)));
 		if (event.isCanceled()) ci.cancel();
 	}
 }

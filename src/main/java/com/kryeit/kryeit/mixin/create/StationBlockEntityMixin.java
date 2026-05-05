@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.MinecraftServerSupplier;
 import com.kryeit.kryeit.event.TrainAssembleEvent;
 import com.kryeit.kryeit.event.TrainDisassembleEvent;
@@ -22,6 +21,7 @@ import com.simibubi.create.content.trains.station.StationBlockEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.common.NeoForge;
 
 
 @Mixin(value = StationBlockEntity.class, remap = false)
@@ -41,7 +41,7 @@ public abstract class StationBlockEntityMixin {
 		ServerPlayer player = Utils.getClosestPlayer(station.getBlockEntityPos(), station.getBlockEntityDimension());
 		if (player == null) return;
 
-		TrainAssembleEvent event = Main.MOD_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
+		TrainAssembleEvent event = NeoForge.EVENT_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
 		if (event.isCanceled()) cir.setReturnValue(false);
 	}
 
@@ -60,7 +60,7 @@ public abstract class StationBlockEntityMixin {
 		Entity entity = world.getEntity(playerUUID);
 		if (!(entity instanceof ServerPlayer player)) return;
 
-		TrainAssembleEvent event = Main.MOD_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
+		TrainAssembleEvent event = NeoForge.EVENT_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
 		if (event.isCanceled()) ci.cancel();
 	}
 
@@ -72,7 +72,7 @@ public abstract class StationBlockEntityMixin {
 		GlobalStation station = getStation();
 		if (station == null) return;
 
-		TrainDisassembleEvent event = Main.MOD_BUS.post(new TrainDisassembleEvent(sender, station.getPresentTrain(), station.getBlockEntityPos()));
+		TrainDisassembleEvent event = NeoForge.EVENT_BUS.post(new TrainDisassembleEvent(sender, station.getPresentTrain(), station.getBlockEntityPos()));
 		if (event.isCanceled()) cir.setReturnValue(false);
 	}
 }

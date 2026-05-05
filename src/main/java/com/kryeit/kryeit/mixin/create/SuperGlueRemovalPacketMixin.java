@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.compat.GriefDefenderImpl;
 import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
@@ -33,6 +32,7 @@ import com.simibubi.create.content.contraptions.glue.SuperGlueRemovalPacket;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(value = SuperGlueRemovalPacket.class, remap = false)
 public class SuperGlueRemovalPacketMixin {
@@ -44,7 +44,7 @@ public class SuperGlueRemovalPacketMixin {
 	private void onHandle(ServerPlayer player, CallbackInfo ci) {
 		Entity glueEntity = player.level().getEntity(entityId);
 		if (glueEntity instanceof SuperGlueEntity superGlue) {
-			GlueKillEvent event = Main.MOD_BUS.post(new GlueKillEvent(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox())));
+			GlueKillEvent event = NeoForge.EVENT_BUS.post(new GlueKillEvent(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox())));
 			if (event.isCanceled()) ci.cancel();
 		}
 	}

@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
@@ -16,6 +15,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 
@@ -33,7 +33,7 @@ public class ScheduleItemEntityInteractionMixin {
 		Vec3 vec3d = event.getLocalPos();
 		BlockPos pos = new BlockPos(new Vec3i((int) vec3d.x, (int) vec3d.y, (int) vec3d.z));
 
-		ScheduleEntityInteractEvent postedEvent = Main.MOD_BUS.post(new ScheduleEntityInteractEvent((ServerPlayer) event.getEntity(), train, pos));
+		ScheduleEntityInteractEvent postedEvent = NeoForge.EVENT_BUS.post(new ScheduleEntityInteractEvent((ServerPlayer) event.getEntity(), train, pos));
 		if (postedEvent.isCanceled()) ci.cancel();
 	}
 }

@@ -1,5 +1,7 @@
 package com.kryeit.kryeit;
 
+import org.slf4j.Logger;
+
 import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
@@ -19,42 +21,44 @@ import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.commands.CommandSourceStack;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 
 @Mod(Main.MOD_ID)
 public class Main {
+	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MOD_ID = "kryeit";
 
 	public static TrainTrustManager trainTrustManager;
-	public static IEventBus MOD_BUS;
 
-	public Main(IEventBus modBus) {
-		Main.MOD_BUS = modBus;
-		modBus.register(this);
+	public Main() {
+		NeoForge.EVENT_BUS.register(this);
+
 		if (!CompatAddon.GRIEF_DEFENDER.isLoaded()) return;
+		LOGGER.info("Enabling Kryeit GriefDefender support");
 
 		trainTrustManager = new TrainTrustManager();
 
-		modBus.register(OnCreateGlue.class);
-		modBus.register(OnKillGlue.class);
-		modBus.register(OnTrainRelocate.class);
-		modBus.register(OnControlsInteract.class);
-		modBus.register(OnToolboxEquip.class);
-		modBus.register(OnClipboardEdit.class);
-		modBus.register(OnToolboxPickup.class);
-		modBus.register(OnTrainAssemble.class);
-		modBus.register(OnTrainDisassemble.class);
-		modBus.register(OnTrainChangeName.class);
-		modBus.register(OnFilterInteract.class);
-		modBus.register(OnScheduleEntityInteract.class);
-		modBus.register(OnTrainStorageInteract.class);
-		modBus.register(OnPotatoCannonShoot.class);
+		NeoForge.EVENT_BUS.register(OnCreateGlue.class);
+		NeoForge.EVENT_BUS.register(OnKillGlue.class);
+		NeoForge.EVENT_BUS.register(OnTrainRelocate.class);
+		NeoForge.EVENT_BUS.register(OnControlsInteract.class);
+		NeoForge.EVENT_BUS.register(OnToolboxEquip.class);
+		NeoForge.EVENT_BUS.register(OnClipboardEdit.class);
+		NeoForge.EVENT_BUS.register(OnToolboxPickup.class);
+		NeoForge.EVENT_BUS.register(OnTrainAssemble.class);
+		NeoForge.EVENT_BUS.register(OnTrainDisassemble.class);
+		NeoForge.EVENT_BUS.register(OnTrainChangeName.class);
+		NeoForge.EVENT_BUS.register(OnFilterInteract.class);
+		NeoForge.EVENT_BUS.register(OnScheduleEntityInteract.class);
+		NeoForge.EVENT_BUS.register(OnTrainStorageInteract.class);
+		NeoForge.EVENT_BUS.register(OnPotatoCannonShoot.class);
 	}
 
 	@SubscribeEvent

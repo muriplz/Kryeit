@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.ControlsInteractEvent;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.actors.trainControls.ControlsInputPacket;
@@ -17,6 +16,7 @@ import com.simibubi.create.content.trains.entity.Train;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(value = ControlsInputPacket.class, remap = false)
 public class ControlsInputPacketMixin {
@@ -41,7 +41,7 @@ public class ControlsInputPacketMixin {
 			train = Create.RAILWAYS.trains.get(carriageContraption.trainId);
 		} else return;
 
-		ControlsInteractEvent event = Main.MOD_BUS.post(new ControlsInteractEvent(player, train, pos));
+		ControlsInteractEvent event = NeoForge.EVENT_BUS.post(new ControlsInteractEvent(player, train, pos));
 		if (event.isCanceled()) {
 			ci.cancel();
 		}

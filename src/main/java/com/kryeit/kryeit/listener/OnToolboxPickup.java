@@ -13,6 +13,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 public class OnToolboxPickup {
 	@SubscribeEvent
 	public static void onToolboxPickup(ToolboxPickupEvent event) {
-		return event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.toolboxPos())));
+		event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.toolboxPos())));
 	}
 }

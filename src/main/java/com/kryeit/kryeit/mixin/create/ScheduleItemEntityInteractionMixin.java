@@ -34,6 +34,6 @@ public class ScheduleItemEntityInteractionMixin {
 		BlockPos pos = new BlockPos(new Vec3i((int) vec3d.x, (int) vec3d.y, (int) vec3d.z));
 
 		ScheduleEntityInteractEvent postedEvent = Main.MOD_BUS.post(new ScheduleEntityInteractEvent((ServerPlayer) event.getEntity(), train, pos));
-		if (event.isCanceled()) ci.cancel();
+		if (postedEvent.isCanceled()) ci.cancel();
 	}
 }

@@ -1,7 +1,5 @@
 package com.kryeit.kryeit;
 
-import org.slf4j.Logger;
-
 import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
@@ -21,7 +19,6 @@ import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.neoforged.bus.api.IEventBus;
@@ -33,7 +30,6 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 @Mod(Main.MOD_ID)
 public class Main {
 	public static final String MOD_ID = "kryeit";
-	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public static TrainTrustManager trainTrustManager;
 	public static IEventBus MOD_BUS;

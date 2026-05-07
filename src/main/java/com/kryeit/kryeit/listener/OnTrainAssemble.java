@@ -7,7 +7,7 @@ import com.kryeit.kryeit.event.TrainAssembleEvent;
 import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.entity.Train;
 
-import me.lucko.fabric.api.permissions.v0.Permissions;
+import com.kryeit.kryeit.compat.Permissions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

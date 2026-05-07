@@ -24,12 +24,6 @@ repositories {
 		url = 'https://repo.glaremasters.me/repository/bloodshot'
 	}
 
-	// Permissions API
-	maven {
-		name = "KTTMaven"
-		url = "https://maven.kessokuteatime.work/releases"
-	}
-
 	maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
 	maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
@@ -37,7 +31,7 @@ repositories {
 dependencies {
 	compileOnly "com.griefdefender:api:${griefdefender_version}"
 	compileOnly("com.simibubi.create:create-1.21.1:${create_version}")
-	compileOnly("org.thinkingstudio:neopermissions:0.1.1+mc1.21.1")
+	compileOnly 'net.luckperms:api:5.4'
 }
 
 neoForge {

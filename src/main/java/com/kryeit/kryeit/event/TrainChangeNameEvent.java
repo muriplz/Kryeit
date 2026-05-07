@@ -1,19 +1,33 @@
 package com.kryeit.kryeit.event;
 
+
 import com.simibubi.create.content.trains.entity.Train;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-public interface TrainChangeNameEvent {
-    Event<TrainChangeNameEvent> EVENT = EventFactory.createArrayBacked(TrainChangeNameEvent.class, listeners -> (player, train, pos) -> {
-        for (TrainChangeNameEvent listener : listeners) {
-            return listener.onTrainChangeName(player, train, pos);
-        }
-        return true;
-    });
+public class TrainChangeNameEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final Train train;
+	private final BlockPos pos;
 
-    boolean onTrainChangeName(ServerPlayerEntity player, Train train, BlockPos pos);
+	public TrainChangeNameEvent(ServerPlayer player, Train train, BlockPos pos) {
+		this.player = player;
+		this.train = train;
+		this.pos = pos;
+	}
+
+	public BlockPos pos() {
+		return pos;
+	}
+
+	public Train train() {
+		return train;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
 }

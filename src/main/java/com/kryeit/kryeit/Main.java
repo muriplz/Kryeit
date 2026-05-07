@@ -1,25 +1,10 @@
 package com.kryeit.kryeit;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.kryeit.kryeit.commands.TrainTrust;
 import com.kryeit.kryeit.commands.TrainUntrust;
 import com.kryeit.kryeit.compat.CompatAddon;
-import com.kryeit.kryeit.event.ClipboardEditEvent;
-import com.kryeit.kryeit.event.ControlsInteractEvent;
-import com.kryeit.kryeit.event.FilterInteractEvent;
-import com.kryeit.kryeit.event.GlueCreateEvent;
-import com.kryeit.kryeit.event.GlueKillEvent;
-import com.kryeit.kryeit.event.PotatoCannonShootEvent;
-import com.kryeit.kryeit.event.ScheduleEntityInteractEvent;
-import com.kryeit.kryeit.event.ToolboxEquipEvent;
-import com.kryeit.kryeit.event.ToolboxPickupEvent;
-import com.kryeit.kryeit.event.TrainAssembleEvent;
-import com.kryeit.kryeit.event.TrainChangeNameEvent;
-import com.kryeit.kryeit.event.TrainDisassembleEvent;
-import com.kryeit.kryeit.event.TrainRelocationEvent;
-import com.kryeit.kryeit.event.TrainStorageInteractEvent;
 import com.kryeit.kryeit.listener.OnClipboardEdit;
 import com.kryeit.kryeit.listener.OnControlsInteract;
 import com.kryeit.kryeit.listener.OnCreateGlue;
@@ -35,41 +20,52 @@ import com.kryeit.kryeit.listener.OnTrainDisassemble;
 import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.logging.LogUtils;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.CommandSourceStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
-public class Main implements ModInitializer {
-    public static final String MOD_ID = "kryeit";
-    public static final Logger LOGGER = LoggerFactory.getLogger("Create: Kryeit");
+
+@Mod(Main.MOD_ID)
+public class Main {
+	private static final Logger LOGGER = LogUtils.getLogger();
+	public static final String MOD_ID = "kryeit";
 
 	public static TrainTrustManager trainTrustManager;
-	@Override
-	public void onInitialize() {
 
-		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
-			trainTrustManager = new TrainTrustManager();
+	public Main() {
+		NeoForge.EVENT_BUS.register(this);
 
-			GlueCreateEvent.EVENT.register(new OnCreateGlue());
-			GlueKillEvent.EVENT.register(new OnKillGlue());
-			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
-			ControlsInteractEvent.EVENT.register(new OnControlsInteract());
-			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
-			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
-			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
-			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
-			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
-			FilterInteractEvent.EVENT.register(new OnFilterInteract());
-			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
-			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
+		if (!CompatAddon.GRIEF_DEFENDER.isLoaded()) return;
+		LOGGER.info("Enabling Kryeit GriefDefender support");
 
-			PotatoCannonShootEvent.EVENT.register(new OnPotatoCannonShoot());
+		trainTrustManager = new TrainTrustManager();
 
-			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
-				TrainTrust.register(dispatcher);
-				TrainUntrust.register(dispatcher);
-			});
-		}
+		NeoForge.EVENT_BUS.register(OnCreateGlue.class);
+		NeoForge.EVENT_BUS.register(OnKillGlue.class);
+		NeoForge.EVENT_BUS.register(OnTrainRelocate.class);
+		NeoForge.EVENT_BUS.register(OnControlsInteract.class);
+		NeoForge.EVENT_BUS.register(OnToolboxEquip.class);
+		NeoForge.EVENT_BUS.register(OnClipboardEdit.class);
+		NeoForge.EVENT_BUS.register(OnToolboxPickup.class);
+		NeoForge.EVENT_BUS.register(OnTrainAssemble.class);
+		NeoForge.EVENT_BUS.register(OnTrainDisassemble.class);
+		NeoForge.EVENT_BUS.register(OnTrainChangeName.class);
+		NeoForge.EVENT_BUS.register(OnFilterInteract.class);
+		NeoForge.EVENT_BUS.register(OnScheduleEntityInteract.class);
+		NeoForge.EVENT_BUS.register(OnTrainStorageInteract.class);
+		NeoForge.EVENT_BUS.register(OnPotatoCannonShoot.class);
+	}
+
+	@SubscribeEvent
+	public void onCommandRegistration(RegisterCommandsEvent event) {
+		CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+
+		TrainTrust.register(dispatcher);
+		TrainUntrust.register(dispatcher);
 	}
 }

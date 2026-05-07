@@ -18,36 +18,34 @@
 
 package com.kryeit.kryeit.mixin.create;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kryeit.kryeit.compat.GriefDefenderImpl;
 import com.kryeit.kryeit.event.GlueCreateEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionPacket;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(SuperGlueSelectionPacket.class)
 public class SuperGlueSelectionPacketMixin {
-
+	@Final
 	@Shadow
 	private BlockPos from;
+	@Final
 	@Shadow
 	private BlockPos to;
 
 	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
-	public void onActivate(SimplePacketBase.Context context, CallbackInfoReturnable<Boolean> cir){
-
-		ServerPlayerEntity player = context.getSender();
-
-		if (!GlueCreateEvent.EVENT.invoker().onCreateGlue(player, GriefDefenderImpl.getBlockPositionsInCube(from, to))) {
-			cir.setReturnValue(false);
-		}
+	public void onActivate(ServerPlayer player, CallbackInfo ci) {
+		GlueCreateEvent event = NeoForge.EVENT_BUS.post(new GlueCreateEvent(player, GriefDefenderImpl.getBlockPositionsInCube(from, to)));
+		if (event.isCanceled()) ci.cancel();
 	}
 }
 

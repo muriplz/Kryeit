@@ -11,9 +11,10 @@ import com.simibubi.create.content.contraptions.MountedStorageManager;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(MountedStorageManager.class)
 public class MountedStorageManagerMixin {
@@ -23,16 +24,15 @@ public class MountedStorageManagerMixin {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void testing(Contraption contraption, PlayerEntity player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
+	private void testing(Contraption contraption, Player player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
 		if (!(contraption.entity instanceof CarriageContraptionEntity cce))
 			return;
 
 		Train train = cce.getCarriage().train;
 		BlockPos pos = localPos;
-		pos = pos.add(cce.getBlockPos());
+		pos = pos.offset(cce.blockPosition());
 
-		if (!TrainStorageInteractEvent.EVENT.invoker().onTrainStorageInteract((ServerPlayerEntity) player, train, pos)) {
-			cir.setReturnValue(false);
-		}
+		TrainStorageInteractEvent event = NeoForge.EVENT_BUS.post(new TrainStorageInteractEvent((ServerPlayer) player, train, pos));
+		if (event.isCanceled()) cir.setReturnValue(false);
 	}
 }

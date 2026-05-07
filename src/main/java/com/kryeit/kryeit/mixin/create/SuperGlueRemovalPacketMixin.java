@@ -18,6 +18,7 @@
 
 package com.kryeit.kryeit.mixin.create;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,25 +30,22 @@ import com.kryeit.kryeit.event.GlueKillEvent;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueRemovalPacket;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(value = SuperGlueRemovalPacket.class, remap = false)
 public class SuperGlueRemovalPacketMixin {
-
+	@Final
 	@Shadow
 	private int entityId;
 
-	@Inject(method = "lambda$handle$0", remap = false, at = @At("HEAD"), cancellable = true)
-	private void onHandle(SuperGlueRemovalPacket.Context context, CallbackInfo ci) {
-		ServerPlayerEntity player = context.getSender();
-		if (player != null) {
-			Entity entity = player.getWorld().getEntityById(entityId);
-			if (entity instanceof SuperGlueEntity superGlue) {
-				if (!GlueKillEvent.EVENT.invoker().onKillGlue(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox()))) {
-					ci.cancel();
-				}
-			}
+	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
+	private void onHandle(ServerPlayer player, CallbackInfo ci) {
+		Entity glueEntity = player.level().getEntity(entityId);
+		if (glueEntity instanceof SuperGlueEntity superGlue) {
+			GlueKillEvent event = NeoForge.EVENT_BUS.post(new GlueKillEvent(player, GriefDefenderImpl.getBlockPositionsInAABB(superGlue.getBoundingBox())));
+			if (event.isCanceled()) ci.cancel();
 		}
 	}
 }

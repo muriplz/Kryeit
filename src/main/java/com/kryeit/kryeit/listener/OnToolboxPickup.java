@@ -2,15 +2,17 @@ package com.kryeit.kryeit.listener;
 
 import java.util.List;
 
+import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.ToolboxPickupEvent;
 import com.kryeit.kryeit.utils.Utils;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-public class OnToolboxPickup implements ToolboxPickupEvent {
-	@Override
-	public boolean onToolboxPickup(ServerPlayerEntity player, BlockPos toolboxPos) {
-		return Utils.canBreakBlocks(player, List.of(toolboxPos));
+@EventBusSubscriber(modid = Main.MOD_ID)
+public class OnToolboxPickup {
+	@SubscribeEvent
+	public static void onToolboxPickup(ToolboxPickupEvent event) {
+		event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.toolboxPos())));
 	}
 }

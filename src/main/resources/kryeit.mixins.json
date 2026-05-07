@@ -5,10 +5,10 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MinecraftServerMixin",
-    "create.BlockHelperMixin",
     "create.ClipboardBlockEntityMixin",
     "create.ControlsInputPacketMixin",
     "create.FilteringBehaviourMixin",
+    "create.MixinChainPackageInteractionPacket",
     "create.MountedStorageManagerMixin",
     "create.PotatoCannonItemMixin",
     "create.ScheduleItemEntityInteractionMixin",

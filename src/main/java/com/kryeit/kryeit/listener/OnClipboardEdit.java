@@ -2,17 +2,17 @@ package com.kryeit.kryeit.listener;
 
 import java.util.List;
 
+import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.ClipboardEditEvent;
 import com.kryeit.kryeit.utils.Utils;
-import com.simibubi.create.content.equipment.clipboard.ClipboardBlockEntity;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-public class OnClipboardEdit implements ClipboardEditEvent {
-
-	@Override
-	public boolean onClipboardEdit(ServerPlayerEntity player, ClipboardBlockEntity clipboard, BlockPos pos) {
-		return Utils.canBreakBlocks(player, List.of(pos));
+@EventBusSubscriber(modid = Main.MOD_ID)
+public class OnClipboardEdit {
+	@SubscribeEvent
+	public static void onClipboardEdit(ClipboardEditEvent event) {
+		event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.getPos())));
 	}
 }

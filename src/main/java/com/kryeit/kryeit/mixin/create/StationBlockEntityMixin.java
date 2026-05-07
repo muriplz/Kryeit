@@ -18,15 +18,14 @@ import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.common.NeoForge;
+
 
 @Mixin(value = StationBlockEntity.class, remap = false)
 public abstract class StationBlockEntityMixin {
-
 	@Shadow
 	@Nullable
 	public abstract GlobalStation getStation();
@@ -37,21 +36,15 @@ public abstract class StationBlockEntityMixin {
 	)
 	public void onNameChange(String name, CallbackInfoReturnable<Boolean> cir) {
 		GlobalStation station = getStation();
+		if (station == null) return;
 
-		if (station == null) {
-			return;
-		}
+		ServerPlayer player = Utils.getClosestPlayer(station.getBlockEntityPos(), station.getBlockEntityDimension());
+		if (player == null) return;
 
-		ServerPlayerEntity player = Utils.getClosestPlayer(station.blockEntityPos, station.blockEntityDimension);
-
-		if (player == null) {
-			return;
-		}
-
-		if (!TrainAssembleEvent.EVENT.invoker().onTrainAssembly(player, station.getPresentTrain(), station.getBlockEntityPos())) {
-			cir.setReturnValue(false);
-		}
+		TrainAssembleEvent event = NeoForge.EVENT_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
+		if (event.isCanceled()) cir.setReturnValue(false);
 	}
+
 	@Inject(
 			method = "assemble",
 			at = @At("RETURN"), cancellable = true
@@ -59,39 +52,27 @@ public abstract class StationBlockEntityMixin {
 	public void onAssemble(UUID playerUUID, CallbackInfo ci) {
 		GlobalStation station = getStation();
 
-		if (station == null) {
-			return;
-		}
+		if (station == null) return;
 
-		RegistryKey<World> dimensionKey = station.getBlockEntityDimension();
-		ServerWorld world = MinecraftServerSupplier.getServer().getWorld(dimensionKey);
-
+		ServerLevel world = MinecraftServerSupplier.getServer().getLevel(station.getBlockEntityDimension());
 		if (world == null) return;
 
 		Entity entity = world.getEntity(playerUUID);
+		if (!(entity instanceof ServerPlayer player)) return;
 
-		if (!(entity instanceof ServerPlayerEntity player)) return;
-
-		if (!TrainAssembleEvent.EVENT.invoker().onTrainAssembly(player, station.getPresentTrain(), station.getBlockEntityPos())) {
-			ci.cancel();
-		}
+		TrainAssembleEvent event = NeoForge.EVENT_BUS.post(new TrainAssembleEvent(player, station.getPresentTrain(), station.getBlockEntityPos()));
+		if (event.isCanceled()) ci.cancel();
 	}
 
 	@Inject(
 			method = "tryDisassembleTrain",
 			at = @At("HEAD"), cancellable = true
 	)
-	public void onDisassemble(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
-		if (sender.getWorld().isClient()) return;
-
+	public void onDisassemble(ServerPlayer sender, CallbackInfoReturnable<Boolean> cir) {
 		GlobalStation station = getStation();
+		if (station == null) return;
 
-		if (station == null) {
-			return;
-		}
-
-		if (!TrainDisassembleEvent.EVENT.invoker().onTrainDisassembly(sender, station.getPresentTrain(), station.getBlockEntityPos())) {
-			cir.setReturnValue(false);
-		}
+		TrainDisassembleEvent event = NeoForge.EVENT_BUS.post(new TrainDisassembleEvent(sender, station.getPresentTrain(), station.getBlockEntityPos()));
+		if (event.isCanceled()) cir.setReturnValue(false);
 	}
 }

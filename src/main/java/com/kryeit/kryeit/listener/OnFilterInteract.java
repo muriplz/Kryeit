@@ -1,17 +1,20 @@
 package com.kryeit.kryeit.listener;
 
+
 import java.util.List;
 
+import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.event.FilterInteractEvent;
 import com.kryeit.kryeit.utils.Utils;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-public class OnFilterInteract implements FilterInteractEvent {
+@EventBusSubscriber(modid = Main.MOD_ID)
+public class OnFilterInteract {
 
-	@Override
-	public boolean onFilterInteract(ServerPlayerEntity player, BlockPos pos) {
-		return Utils.canBreakBlocks(player, List.of(pos));
+	@SubscribeEvent
+	public static void onFilterInteract(FilterInteractEvent event) {
+		event.setCanceled(!Utils.canBreakBlocks(event.player(), List.of(event.pos())));
 	}
 }

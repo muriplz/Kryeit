@@ -8,15 +8,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.kryeit.kryeit.event.PotatoCannonShootEvent;
+import com.simibubi.create.api.equipment.potatoCannon.PotatoCannonProjectileType;
 import com.simibubi.create.content.equipment.potatoCannon.PotatoCannonItem;
-import com.simibubi.create.content.equipment.potatoCannon.PotatoProjectileTypeManager;
+import com.simibubi.create.foundation.utility.GlobalRegistryAccess;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.NeoForge;
+
 
 @Mixin(PotatoCannonItem.class)
 public class PotatoCannonItemMixin {
@@ -26,17 +29,18 @@ public class PotatoCannonItemMixin {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void onShoot(World world, PlayerEntity player, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-		ItemStack stack = player.getStackInHand(hand);
-		ItemStack findAmmo = player.getProjectileType(stack);
-		Optional<ItemStack> ammoOptional = PotatoProjectileTypeManager.getTypeForStack(findAmmo)
+	private void onShoot(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+		ItemStack stack = player.getItemInHand(hand);
+		ItemStack findAmmo = player.getProjectile(stack);
+
+		Optional<ItemStack> ammoOptional = PotatoCannonProjectileType
+				.getTypeForItem(GlobalRegistryAccess.getOrThrow(), findAmmo.getItem())
 				.map($ -> findAmmo);
 
 		if (ammoOptional.isEmpty()) return;
-		ItemStack ammo = ammoOptional.get().getItem().getDefaultStack();
+		ItemStack ammo = ammoOptional.get().getItem().getDefaultInstance();
 
-		if (!PotatoCannonShootEvent.EVENT.invoker().onCannonShoot((ServerPlayerEntity) player, ammo)) {
-			cir.setReturnValue(TypedActionResult.fail(stack));
-		}
+		PotatoCannonShootEvent event = NeoForge.EVENT_BUS.post(new PotatoCannonShootEvent((ServerPlayer) player, ammo));
+		if (event.isCanceled()) cir.setReturnValue(InteractionResultHolder.fail(stack));
 	}
 }

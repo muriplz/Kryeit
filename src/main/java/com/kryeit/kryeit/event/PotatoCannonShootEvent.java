@@ -1,17 +1,25 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
 
-public interface PotatoCannonShootEvent {
-    Event<PotatoCannonShootEvent> EVENT = EventFactory.createArrayBacked(PotatoCannonShootEvent.class, listeners -> (player, ammo) -> {
-        for (PotatoCannonShootEvent listener : listeners) {
-            return listener.onCannonShoot(player, ammo);
-        }
-        return true;
-    });
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
-    boolean onCannonShoot(ServerPlayerEntity player, ItemStack ammo);
+public class PotatoCannonShootEvent extends Event implements ICancellableEvent {
+	private final ServerPlayer player;
+	private final ItemStack ammo;
+
+	public PotatoCannonShootEvent(ServerPlayer player, ItemStack ammo) {
+		this.player = player;
+		this.ammo = ammo;
+	}
+
+	public ServerPlayer player() {
+		return player;
+	}
+
+	public ItemStack ammo() {
+		return ammo;
+	}
 }

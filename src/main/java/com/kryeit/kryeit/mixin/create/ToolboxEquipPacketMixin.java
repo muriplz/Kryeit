@@ -1,5 +1,6 @@
 package com.kryeit.kryeit.mixin.create;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -8,24 +9,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kryeit.kryeit.event.ToolboxEquipEvent;
 import com.simibubi.create.content.equipment.toolbox.ToolboxEquipPacket;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mixin(ToolboxEquipPacket.class)
 public class ToolboxEquipPacketMixin {
-
+	@Final
 	@Shadow
 	private BlockPos toolboxPos;
 
-	@Inject(method = "lambda$handle$1", remap = false, at = @At("HEAD"), cancellable = true)
-	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci){
-		ServerPlayerEntity player = context.getSender();
-		if (player == null)
-			return;
-		if(!ToolboxEquipEvent.EVENT.invoker().onToolboxEquip(player, toolboxPos))
-			ci.cancel();
+	@Inject(method = "handle", remap = false, at = @At("HEAD"), cancellable = true)
+	public void onHandle(ServerPlayer player, CallbackInfo ci) {
+		ToolboxEquipEvent event = NeoForge.EVENT_BUS.post(new ToolboxEquipEvent(player, toolboxPos));
+		if (event.isCanceled()) ci.cancel();
 	}
 
 }

@@ -21,32 +21,22 @@ public class OnTrainChangeName implements TrainChangeNameEvent {
 			return true;
 		}
 
-		// Check if the player can break blocks and it's not wilderness
-		if (Utils.canBreakBlocks(player, List.of(pos)) && !Utils.isWilderness(List.of(pos))) {
+		if (Utils.canBreakBlocks(player, List.of(pos)) && !Utils.isWilderness(player, List.of(pos))) {
 			return true;
 		}
 
-		if (Utils.isWilderness(List.of(pos))) {
-
-			if (train == null) {
-				return true;
-			} else {
-				if (train.owner == null) {
-					return true;
-				}
-
-				// Check if the player is the owner or a trusted player
-				if ((train.owner.equals(player.getUuid()) ||
+		if (train != null && train.owner != null &&
+				(train.owner.equals(player.getUuid()) ||
 						Main.trainTrustManager.getTrustedPlayers(train.owner).contains(player.getUuid()))) {
-					return true;
-				}
-			}
+			return true;
 		}
 
-		// Send a message if the player has no permission
+		if (Utils.isWilderness(player, List.of(pos)) && (train == null || train.owner == null)) {
+			return true;
+		}
+
 		player.sendMessage(Text.literal("You have no permission to change the name of this train")
 				.setStyle(Style.EMPTY.withColor(Formatting.RED)), true);
-		// Deny the action
 		return false;
 	}
 }

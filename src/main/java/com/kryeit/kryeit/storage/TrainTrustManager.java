@@ -21,6 +21,7 @@ public class TrainTrustManager {
 	}
 
 	public void addTrustedPlayer(UUID ownerUUID, UUID trustedUUID) {
+		if (trustedUUID == null) return;
 		File ownerFile = getOwnerFile(ownerUUID);
 		List<UUID> trustedPlayers = getTrustedPlayers(ownerUUID);
 		if (!trustedPlayers.contains(trustedUUID)) {

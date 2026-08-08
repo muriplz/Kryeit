@@ -16,7 +16,7 @@ public class OnScheduleEntityInteract implements ScheduleEntityInteractEvent {
 	public boolean onScheduleEntityInteract(ServerPlayerEntity player, Train train, BlockPos seatPos) {
 
 		// Check if the player can break blocks and it's not wilderness
-		if (Utils.canBreakBlocks(player, List.of(seatPos)) && !Utils.isWilderness(List.of(seatPos))) {
+		if (Utils.canBreakBlocks(player, List.of(seatPos)) && !Utils.isWilderness(player, List.of(seatPos))) {
 			return true;
 		}
 

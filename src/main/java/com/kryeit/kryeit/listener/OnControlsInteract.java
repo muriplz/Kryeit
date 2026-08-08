@@ -15,7 +15,7 @@ public class OnControlsInteract implements ControlsInteractEvent {
 	@Override
 	public boolean onControlsInteract(ServerPlayerEntity player, Train train, BlockPos controlsPos) {
 
-		if (Utils.canBreakBlocks(player, List.of(controlsPos)) && !Utils.isWilderness(List.of(controlsPos))) {
+		if (Utils.canBreakBlocks(player, List.of(controlsPos)) && !Utils.isWilderness(player, List.of(controlsPos))) {
 			return true;
 		}
 

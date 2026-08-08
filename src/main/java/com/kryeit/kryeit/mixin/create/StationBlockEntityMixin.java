@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.kryeit.kryeit.MinecraftServerSupplier;
 import com.kryeit.kryeit.event.TrainAssembleEvent;
+import com.kryeit.kryeit.event.TrainChangeNameEvent;
 import com.kryeit.kryeit.event.TrainDisassembleEvent;
 import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.station.GlobalStation;
@@ -48,13 +49,13 @@ public abstract class StationBlockEntityMixin {
 			return;
 		}
 
-		if (!TrainAssembleEvent.EVENT.invoker().onTrainAssembly(player, station.getPresentTrain(), station.getBlockEntityPos())) {
+		if (!TrainChangeNameEvent.EVENT.invoker().onTrainChangeName(player, station.getPresentTrain(), station.getBlockEntityPos())) {
 			cir.setReturnValue(false);
 		}
 	}
 	@Inject(
 			method = "assemble",
-			at = @At("RETURN"), cancellable = true
+			at = @At("HEAD"), cancellable = true
 	)
 	public void onAssemble(UUID playerUUID, CallbackInfo ci) {
 		GlobalStation station = getStation();

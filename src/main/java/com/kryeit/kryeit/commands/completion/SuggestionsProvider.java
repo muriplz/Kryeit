@@ -24,12 +24,19 @@ public class SuggestionsProvider {
 				.collect(Collectors.toList()));
 	}
 
+	public static SuggestionProvider<ServerCommandSource> suggestOfflinePlayers() {
+		return (context, builder) -> suggestMatchingPlayerNames(builder, Offlines.getPlayerNames().stream()
+				.filter(name -> !name.isEmpty())
+				.collect(Collectors.toList()));
+	}
+
 	public static SuggestionProvider<ServerCommandSource> suggestTrainTrustedPlayers() {
 		return (context, builder) -> {
 			UUID ownerUUID = context.getSource().getPlayer().getUuid();
 
 			List<String> playerNames = Main.trainTrustManager.getTrustedPlayers(ownerUUID).stream()
 					.map(Offlines::getNameByUUID)
+					.filter(name -> !name.isEmpty())
 					.toList();
 			return suggestMatchingPlayerNames(builder, playerNames);
 		};

@@ -1,6 +1,6 @@
 package com.kryeit.kryeit.commands;
 
-import java.util.List;
+import java.util.UUID;
 
 import com.kryeit.kryeit.Main;
 import com.kryeit.kryeit.commands.completion.SuggestionsProvider;
@@ -23,16 +23,18 @@ public class TrainTrust {
 
 		if (player == null) return 0;
 
-		List<String> playerNames = Main.trainTrustManager.getTrustedPlayers(player.getUuid()).stream()
-				.map(Offlines::getNameByUUID)
-				.toList();
+		UUID trustedUUID = Offlines.getUUIDbyName(name);
+		if (trustedUUID == null) {
+			player.sendMessage(Text.literal("Player " + name + " was not found"));
+			return 0;
+		}
 
-		if (playerNames.contains(name)) {
+		if (Main.trainTrustManager.getTrustedPlayers(player.getUuid()).contains(trustedUUID)) {
 			player.sendMessage(Text.literal("You already trusted " + name + " to your trains"));
 			return 0;
 		}
 
-		Main.trainTrustManager.addTrustedPlayer(player.getUuid(), Offlines.getUUIDbyName(name));
+		Main.trainTrustManager.addTrustedPlayer(player.getUuid(), trustedUUID);
 		player.sendMessage(Text.literal("You trusted " + name + " to your trains"));
 		return Command.SINGLE_SUCCESS;
 	}
@@ -40,7 +42,7 @@ public class TrainTrust {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 		dispatcher.register(CommandManager.literal("traintrust")
 				.then(CommandManager.argument("player", StringArgumentType.word())
-						.suggests(SuggestionsProvider.suggestOnlinePlayers())
+						.suggests(SuggestionsProvider.suggestOfflinePlayers())
 						.executes(context -> execute(context, StringArgumentType.getString(context, "player")))
 				)
 		);

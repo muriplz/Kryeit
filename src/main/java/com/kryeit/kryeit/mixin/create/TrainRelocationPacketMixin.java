@@ -36,7 +36,15 @@ public class TrainRelocationPacketMixin {
 		if (train == null)
 			return;
 
-		BlockPos from = train.carriages.stream().findFirst().get().anyAvailableEntity().getBlockPos();
+		var carriage = train.carriages.stream().findFirst().orElse(null);
+		if (carriage == null)
+			return;
+
+		var entity = carriage.anyAvailableEntity();
+		if (entity == null)
+			return;
+
+		BlockPos from = entity.getBlockPos();
 		BlockPos to = pos;
 
 		if (!TrainRelocationEvent.EVENT.invoker().onTrainRelocation(player, train, from, to)) {

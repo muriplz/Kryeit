@@ -23,15 +23,17 @@ public class MountedStorageManagerMixin {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void testing(Contraption contraption, PlayerEntity player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
+	private void onStorageInteract(Contraption contraption, PlayerEntity player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
 		if (!(contraption.entity instanceof CarriageContraptionEntity cce))
 			return;
 
-		Train train = cce.getCarriage().train;
-		BlockPos pos = localPos;
-		pos = pos.add(cce.getBlockPos());
+		if (!(player instanceof ServerPlayerEntity serverPlayer))
+			return;
 
-		if (!TrainStorageInteractEvent.EVENT.invoker().onTrainStorageInteract((ServerPlayerEntity) player, train, pos)) {
+		Train train = cce.getCarriage().train;
+		BlockPos pos = localPos.add(cce.getBlockPos());
+
+		if (!TrainStorageInteractEvent.EVENT.invoker().onTrainStorageInteract(serverPlayer, train, pos)) {
 			cir.setReturnValue(false);
 		}
 	}

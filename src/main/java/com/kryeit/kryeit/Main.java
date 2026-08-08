@@ -3,8 +3,7 @@ package com.kryeit.kryeit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kryeit.kryeit.commands.TrainTrust;
-import com.kryeit.kryeit.commands.TrainUntrust;
+import com.kryeit.kryeit.commands.KryeitCommands;
 import com.kryeit.kryeit.compat.CompatAddon;
 import com.kryeit.kryeit.event.ClipboardEditEvent;
 import com.kryeit.kryeit.event.ControlsInteractEvent;
@@ -36,40 +35,45 @@ import com.kryeit.kryeit.listener.OnTrainRelocate;
 import com.kryeit.kryeit.listener.OnTrainStorageInteract;
 import com.kryeit.kryeit.storage.TrainTrustManager;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 
-public class Main implements ModInitializer {
+@Mod(Main.MOD_ID)
+public class Main {
     public static final String MOD_ID = "kryeit";
     public static final Logger LOGGER = LoggerFactory.getLogger("Create: Kryeit");
 
-	public static TrainTrustManager trainTrustManager;
-	@Override
-	public void onInitialize() {
+    public static TrainTrustManager trainTrustManager;
 
-		if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
-			trainTrustManager = new TrainTrustManager();
+    public Main(IEventBus modEventBus, ModContainer modContainer) {
+        // The claim backend gates everything: without GriefDefender there is no claim data to
+        // consult, so the protection listeners simply are not registered and every mixin hook
+        // falls through to "allow".
+        if (CompatAddon.GRIEF_DEFENDER.isLoaded()) {
+            trainTrustManager = new TrainTrustManager();
 
-			GlueCreateEvent.EVENT.register(new OnCreateGlue());
-			GlueKillEvent.EVENT.register(new OnKillGlue());
-			TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
-			ControlsInteractEvent.EVENT.register(new OnControlsInteract());
-			ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
-			ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
-			ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
-			TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
-			TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
-			TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
-			FilterInteractEvent.EVENT.register(new OnFilterInteract());
-			ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
-			TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
+            GlueCreateEvent.EVENT.register(new OnCreateGlue());
+            GlueKillEvent.EVENT.register(new OnKillGlue());
+            TrainRelocationEvent.EVENT.register(new OnTrainRelocate());
+            ControlsInteractEvent.EVENT.register(new OnControlsInteract());
+            ToolboxEquipEvent.EVENT.register(new OnToolboxEquip());
+            ClipboardEditEvent.EVENT.register(new OnClipboardEdit());
+            ToolboxPickupEvent.EVENT.register(new OnToolboxPickup());
+            TrainAssembleEvent.EVENT.register(new OnTrainAssemble());
+            TrainDisassembleEvent.EVENT.register(new OnTrainDisassemble());
+            TrainChangeNameEvent.EVENT.register(new OnTrainChangeName());
+            FilterInteractEvent.EVENT.register(new OnFilterInteract());
+            ScheduleEntityInteractEvent.EVENT.register(new OnScheduleEntityInteract());
+            TrainStorageInteractEvent.EVENT.register(new OnTrainStorageInteract());
+            PotatoCannonShootEvent.EVENT.register(new OnPotatoCannonShoot());
 
-			PotatoCannonShootEvent.EVENT.register(new OnPotatoCannonShoot());
+            NeoForge.EVENT_BUS.register(KryeitCommands.class);
 
-			CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, commandSelection) -> {
-				TrainTrust.register(dispatcher);
-				TrainUntrust.register(dispatcher);
-			});
-		}
-	}
+            LOGGER.info("Kryeit loaded for NeoForge 1.21.1 (GriefDefender detected)");
+        } else {
+            LOGGER.info("Kryeit idle: GriefDefender not present, Create claim protection disabled");
+        }
+    }
 }

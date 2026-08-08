@@ -19,11 +19,11 @@ import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 @Mixin(value = StationBlockEntity.class, remap = false)
 public abstract class StationBlockEntityMixin {
@@ -32,18 +32,15 @@ public abstract class StationBlockEntityMixin {
 	@Nullable
 	public abstract GlobalStation getStation();
 
-	@Inject(
-			method = "updateName",
-			at = @At("RETURN"), cancellable = true
-	)
-	public void onNameChange(String name, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "updateName", at = @At("RETURN"), cancellable = true)
+	private void kryeit$onNameChange(String name, CallbackInfoReturnable<Boolean> cir) {
 		GlobalStation station = getStation();
 
 		if (station == null) {
 			return;
 		}
 
-		ServerPlayerEntity player = Utils.getClosestPlayer(station.blockEntityPos, station.blockEntityDimension);
+		ServerPlayer player = Utils.getClosestPlayer(station.blockEntityPos, station.blockEntityDimension);
 
 		if (player == null) {
 			return;
@@ -53,37 +50,32 @@ public abstract class StationBlockEntityMixin {
 			cir.setReturnValue(false);
 		}
 	}
-	@Inject(
-			method = "assemble",
-			at = @At("HEAD"), cancellable = true
-	)
-	public void onAssemble(UUID playerUUID, CallbackInfo ci) {
+
+	@Inject(method = "assemble", at = @At("HEAD"), cancellable = true)
+	private void kryeit$onAssemble(UUID playerUUID, CallbackInfo ci) {
 		GlobalStation station = getStation();
 
 		if (station == null) {
 			return;
 		}
 
-		RegistryKey<World> dimensionKey = station.getBlockEntityDimension();
-		ServerWorld world = MinecraftServerSupplier.getServer().getWorld(dimensionKey);
+		ResourceKey<Level> dimensionKey = station.getBlockEntityDimension();
+		ServerLevel level = MinecraftServerSupplier.getServer().getLevel(dimensionKey);
 
-		if (world == null) return;
+		if (level == null) return;
 
-		Entity entity = world.getEntity(playerUUID);
+		Entity entity = level.getEntity(playerUUID);
 
-		if (!(entity instanceof ServerPlayerEntity player)) return;
+		if (!(entity instanceof ServerPlayer player)) return;
 
 		if (!TrainAssembleEvent.EVENT.invoker().onTrainAssembly(player, station.getPresentTrain(), station.getBlockEntityPos())) {
 			ci.cancel();
 		}
 	}
 
-	@Inject(
-			method = "tryDisassembleTrain",
-			at = @At("HEAD"), cancellable = true
-	)
-	public void onDisassemble(ServerPlayerEntity sender, CallbackInfoReturnable<Boolean> cir) {
-		if (sender.getWorld().isClient()) return;
+	@Inject(method = "tryDisassembleTrain", at = @At("HEAD"), cancellable = true)
+	private void kryeit$onDisassemble(ServerPlayer sender, CallbackInfoReturnable<Boolean> cir) {
+		if (sender.level().isClientSide()) return;
 
 		GlobalStation station = getStation();
 

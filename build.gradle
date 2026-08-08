@@ -1,129 +1,110 @@
 plugins {
-	id 'fabric-loom' version '1.5+'
-	id 'maven-publish'
+    id 'java'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
-version = project.mod_version
-group = project.maven_group
+version = mod_version
+group = mod_group
 
 base {
-	archivesName = project.archives_base_name
-}
-
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"kryeit" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
-}
-repositories {
-	mavenCentral()
-	maven {
-		name = 'aikar'
-		url = 'https://repo.aikar.co/content/groups/aikar'
-	}
-	maven {
-		name = 'GriefDefender'
-		url = 'https://repo.glaremasters.me/repository/bloodshot'
-	}
-	maven {
-		name = 'sonatype_releases'
-		url = 'https://oss.sonatype.org/content/repositories/releases'
-	}
-	maven {
-		name = 'sonatype_snapshots'
-		url = 'https://oss.sonatype.org/content/repositories/snapshots'
-	}
-
-	maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
-	maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
-	maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
-	maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
-	maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-	maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-	maven { url = "https://mvn.devos.one/snapshots/" } // Create, Porting Lib, Forge Tags, Milk Lib, Registrate
-	maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-	maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
-	maven { url = "https://maven.tterrag.com/" } // Flywheel
-
-	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
-	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge config api port
-}
-
-dependencies {
-	compileOnly "com.griefdefender:api:${griefdefender_version}"
-
-	// Setup
-	minecraft("com.mojang:minecraft:${minecraft_version}")
-	mappings(loom.layered {
-		it.mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
-		it.mappings file("mappings/create-conflict-fix.tiny")
-	})
-	modImplementation("net.fabricmc:fabric-loader:${loader_version}")
-
-	// dependencies
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
-
-	// Create - dependencies are added transitively
-	modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
-
-	// Development QOL
-	modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
-	modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
-
-	include(modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT"))
-
-	//for (String module in port_lib_modules.split(",")) {
-	//	modImplementation(include "io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
-	//}
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+    archivesName = mod_id
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.createmod.net' }         // Create, Ponder, Flywheel, Catnip
+    maven { url = 'https://maven.ithundxr.dev/snapshots' } // Registrate
+    maven {
+        name = 'GriefDefender'
+        url = 'https://repo.glaremasters.me/repository/bloodshot'
+    }
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar'
+    }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
-// configure the maven publication
+neoForge {
+    version = neo_version
+
+    runs {
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'forge.logging.console.level', 'debug'
+            gameDirectory = file('run')
+        }
+        client {
+            client()
+            systemProperty 'forge.logging.console.level', 'debug'
+            gameDirectory = file('run')
+        }
+    }
+
+    mods {
+        "$mod_id" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    // Create + ecosystem (NeoForge 1.21.1). Coordinates per the Create wiki. Needed on the
+    // compile classpath so the Create types referenced by the mixins/listeners resolve.
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    // Claim backend + permissions. Both are optional runtime integrations, compiled against the API only.
+    compileOnly("com.griefdefender:api:${griefdefender_version}")
+    compileOnly("net.luckperms:api:${luckperms_version}")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// Expand mod metadata templates (neoforge.mods.toml, pack.mcmeta) with gradle properties.
+final def expansionProps = [
+        minecraft_version      : minecraft_version,
+        minecraft_version_range: minecraft_version_range,
+        neo_version            : neo_version,
+        neo_version_range      : neo_version_range,
+        loader_version_range   : loader_version_range,
+        mod_id                 : mod_id,
+        mod_name               : mod_name,
+        mod_license            : mod_license,
+        mod_version            : mod_version,
+        mod_authors            : mod_authors,
+        create_version_range   : create_version_range,
+        griefdefender_version  : griefdefender_version,
+        luckperms_version      : luckperms_version,
+]
+
+final def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    inputs.properties(expansionProps)
+    expand(expansionProps)
+    from('src/main/templates')
+    into("${layout.buildDirectory.get().asFile}/generated/sources/modMetadata")
+}
+sourceSets.main.resources.srcDir(generateModMetadata)
+neoForge.ideSyncTask(generateModMetadata)
+
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven { url = "file://${project.projectDir}/repo" }
+    }
 }

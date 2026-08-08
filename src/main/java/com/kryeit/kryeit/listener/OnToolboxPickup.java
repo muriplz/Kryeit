@@ -5,12 +5,12 @@ import java.util.List;
 import com.kryeit.kryeit.event.ToolboxPickupEvent;
 import com.kryeit.kryeit.utils.Utils;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public class OnToolboxPickup implements ToolboxPickupEvent {
 	@Override
-	public boolean onToolboxPickup(ServerPlayerEntity player, BlockPos toolboxPos) {
+	public boolean onToolboxPickup(ServerPlayer player, BlockPos toolboxPos) {
 		return Utils.canBreakBlocks(player, List.of(toolboxPos));
 	}
 }

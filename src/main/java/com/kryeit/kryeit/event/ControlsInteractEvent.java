@@ -1,19 +1,19 @@
 package com.kryeit.kryeit.event;
 
+import com.kryeit.kryeit.event.api.Event;
+import com.kryeit.kryeit.event.api.EventFactory;
 import com.simibubi.create.content.trains.entity.Train;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public interface ControlsInteractEvent {
     Event<ControlsInteractEvent> EVENT = EventFactory.createArrayBacked(ControlsInteractEvent.class, listeners -> (player, train, controlsPos) -> {
         for (ControlsInteractEvent listener : listeners) {
-            return listener.onControlsInteract(player, train, controlsPos);
+            if (!listener.onControlsInteract(player, train, controlsPos)) return false;
         }
         return true;
     });
 
-    boolean onControlsInteract(ServerPlayerEntity player, Train train, BlockPos controlsPos);
+    boolean onControlsInteract(ServerPlayer player, Train train, BlockPos controlsPos);
 }

@@ -1,17 +1,18 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import com.kryeit.kryeit.event.api.Event;
+import com.kryeit.kryeit.event.api.EventFactory;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public interface FilterInteractEvent {
     Event<FilterInteractEvent> EVENT = EventFactory.createArrayBacked(FilterInteractEvent.class, listeners -> (player, pos) -> {
         for (FilterInteractEvent listener : listeners) {
-            return listener.onFilterInteract(player, pos);
+            if (!listener.onFilterInteract(player, pos)) return false;
         }
         return true;
     });
 
-    boolean onFilterInteract(ServerPlayerEntity player, BlockPos pos);
+    boolean onFilterInteract(ServerPlayer player, BlockPos pos);
 }

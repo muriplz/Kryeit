@@ -6,13 +6,13 @@ import com.kryeit.kryeit.event.ClipboardEditEvent;
 import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.equipment.clipboard.ClipboardBlockEntity;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public class OnClipboardEdit implements ClipboardEditEvent {
 
 	@Override
-	public boolean onClipboardEdit(ServerPlayerEntity player, ClipboardBlockEntity clipboard, BlockPos pos) {
+	public boolean onClipboardEdit(ServerPlayer player, ClipboardBlockEntity clipboard, BlockPos pos) {
 		return Utils.canBreakBlocks(player, List.of(pos));
 	}
 }

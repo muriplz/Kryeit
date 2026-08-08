@@ -1,9 +1,10 @@
 package com.kryeit.kryeit.compat;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.ModList;
 
 public enum CompatAddon {
-    GRIEF_DEFENDER("griefdefender");
+    GRIEF_DEFENDER("griefdefender"),
+    LUCKPERMS("luckperms");
 
     private final String id;
 
@@ -12,7 +13,7 @@ public enum CompatAddon {
     }
 
     public boolean isLoaded() {
-        return FabricLoader.getInstance().isModLoaded(id());
+        return ModList.get() != null && ModList.get().isLoaded(id());
     }
 
     public String id() {

@@ -7,15 +7,14 @@ import com.kryeit.kryeit.event.TrainStorageInteractEvent;
 import com.kryeit.kryeit.utils.Utils;
 import com.simibubi.create.content.trains.entity.Train;
 
-import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 
 public class OnTrainStorageInteract implements TrainStorageInteractEvent {
 	@Override
-	public boolean onTrainStorageInteract(ServerPlayerEntity player, Train train, BlockPos pos) {
-		if (Permissions.check(player, "group.staff")) {
+	public boolean onTrainStorageInteract(ServerPlayer player, Train train, BlockPos pos) {
+		if (Utils.hasPermission(player, "group.staff")) {
 			return true;
 		}
 
@@ -24,8 +23,8 @@ public class OnTrainStorageInteract implements TrainStorageInteractEvent {
 		}
 
 		if (train != null && train.owner != null &&
-				(train.owner.equals(player.getUuid()) ||
-						Main.trainTrustManager.getTrustedPlayers(train.owner).contains(player.getUuid()))) {
+				(train.owner.equals(player.getUUID()) ||
+						Main.trainTrustManager.getTrustedPlayers(train.owner).contains(player.getUUID()))) {
 			return true;
 		}
 
@@ -33,9 +32,8 @@ public class OnTrainStorageInteract implements TrainStorageInteractEvent {
 			return true;
 		}
 
-		player.sendMessage(Text.literal("You have no permission to access this train's storage"), true);
+		player.displayClientMessage(Component.literal("You have no permission to access this train's storage"), true);
 
 		return false;
 	}
 }
-

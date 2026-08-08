@@ -1,17 +1,18 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
+import com.kryeit.kryeit.event.api.Event;
+import com.kryeit.kryeit.event.api.EventFactory;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 
 public interface PotatoCannonShootEvent {
     Event<PotatoCannonShootEvent> EVENT = EventFactory.createArrayBacked(PotatoCannonShootEvent.class, listeners -> (player, ammo) -> {
         for (PotatoCannonShootEvent listener : listeners) {
-            return listener.onCannonShoot(player, ammo);
+            if (!listener.onCannonShoot(player, ammo)) return false;
         }
         return true;
     });
 
-    boolean onCannonShoot(ServerPlayerEntity player, ItemStack ammo);
+    boolean onCannonShoot(ServerPlayer player, ItemStack ammo);
 }

@@ -1,17 +1,18 @@
 package com.kryeit.kryeit.event;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import com.kryeit.kryeit.event.api.Event;
+import com.kryeit.kryeit.event.api.EventFactory;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public interface ToolboxPickupEvent {
     Event<ToolboxPickupEvent> EVENT = EventFactory.createArrayBacked(ToolboxPickupEvent.class, listeners -> (player, toolboxPos) -> {
         for (ToolboxPickupEvent listener : listeners) {
-            return listener.onToolboxPickup(player, toolboxPos);
+            if (!listener.onToolboxPickup(player, toolboxPos)) return false;
         }
         return true;
     });
 
-    boolean onToolboxPickup(ServerPlayerEntity player, BlockPos toolboxPos);
+    boolean onToolboxPickup(ServerPlayer player, BlockPos toolboxPos);
 }

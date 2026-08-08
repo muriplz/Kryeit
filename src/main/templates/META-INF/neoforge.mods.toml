@@ -1,0 +1,56 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Kryeit/Kryeit/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+description = '''
+Claim-aware protection for Create machines and trains. Gates train relocation, controls,
+assembly/disassembly, naming, schedules, mounted storage, glue, toolboxes, clipboards and
+filters behind GriefDefender claim trust and a per-owner train-trust list.
+'''
+
+# Server-side gameplay hooks into Create internals.
+[[mixins]]
+config = "kryeit.mixins.json"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neo_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "create"
+type = "required"
+versionRange = "${create_version_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: the claim backend the trust checks consult.
+[[dependencies.${mod_id}]]
+modId = "griefdefender"
+type = "optional"
+versionRange = "[0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+# Optional: staff bypass via the `group.staff` permission node.
+[[dependencies.${mod_id}]]
+modId = "luckperms"
+type = "optional"
+versionRange = "[${luckperms_version},)"
+ordering = "AFTER"
+side = "BOTH"

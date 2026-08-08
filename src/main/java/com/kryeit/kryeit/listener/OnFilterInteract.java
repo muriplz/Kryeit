@@ -5,13 +5,13 @@ import java.util.List;
 import com.kryeit.kryeit.event.FilterInteractEvent;
 import com.kryeit.kryeit.utils.Utils;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public class OnFilterInteract implements FilterInteractEvent {
 
 	@Override
-	public boolean onFilterInteract(ServerPlayerEntity player, BlockPos pos) {
+	public boolean onFilterInteract(ServerPlayer player, BlockPos pos) {
 		return Utils.canBreakBlocks(player, List.of(pos));
 	}
 }

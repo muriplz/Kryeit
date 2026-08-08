@@ -11,27 +11,23 @@ import com.simibubi.create.content.contraptions.MountedStorageManager;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
-@Mixin(MountedStorageManager.class)
+@Mixin(value = MountedStorageManager.class, remap = false)
 public class MountedStorageManagerMixin {
 
-	@Inject(
-			method = "handlePlayerStorageInteraction",
-			at = @At("HEAD"),
-			cancellable = true
-	)
-	private void onStorageInteract(Contraption contraption, PlayerEntity player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "handlePlayerStorageInteraction", at = @At("HEAD"), cancellable = true)
+	private void kryeit$onStorageInteract(Contraption contraption, Player player, BlockPos localPos, CallbackInfoReturnable<Boolean> cir) {
 		if (!(contraption.entity instanceof CarriageContraptionEntity cce))
 			return;
 
-		if (!(player instanceof ServerPlayerEntity serverPlayer))
+		if (!(player instanceof ServerPlayer serverPlayer))
 			return;
 
 		Train train = cce.getCarriage().train;
-		BlockPos pos = localPos.add(cce.getBlockPos());
+		BlockPos pos = localPos.offset(cce.blockPosition());
 
 		if (!TrainStorageInteractEvent.EVENT.invoker().onTrainStorageInteract(serverPlayer, train, pos)) {
 			cir.setReturnValue(false);

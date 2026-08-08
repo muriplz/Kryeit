@@ -12,11 +12,11 @@ import com.kryeit.kryeit.event.TrainRelocationEvent;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.entity.TrainRelocationPacket;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
+// Create 6 (NeoForge 1.21.1) packet handler is handle(ServerPlayer) -> void.
 @Mixin(value = TrainRelocationPacket.class, remap = false)
 public class TrainRelocationPacketMixin {
 
@@ -26,9 +26,8 @@ public class TrainRelocationPacketMixin {
 	@Shadow
 	BlockPos pos;
 
-	@Inject(method = "lambda$handle$2", remap = false, at = @At("HEAD"), cancellable = true)
-	public void onHandle(SimplePacketBase.Context context, CallbackInfo ci){
-		ServerPlayerEntity player = context.getSender();
+	@Inject(method = "handle", at = @At("HEAD"), cancellable = true)
+	private void kryeit$onHandle(ServerPlayer player, CallbackInfo ci) {
 		if (player == null)
 			return;
 
@@ -44,12 +43,11 @@ public class TrainRelocationPacketMixin {
 		if (entity == null)
 			return;
 
-		BlockPos from = entity.getBlockPos();
+		BlockPos from = entity.blockPosition();
 		BlockPos to = pos;
 
 		if (!TrainRelocationEvent.EVENT.invoker().onTrainRelocation(player, train, from, to)) {
 			ci.cancel();
 		}
 	}
-
 }

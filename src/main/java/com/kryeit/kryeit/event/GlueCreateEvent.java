@@ -2,18 +2,19 @@ package com.kryeit.kryeit.event;
 
 import java.util.List;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import com.kryeit.kryeit.event.api.Event;
+import com.kryeit.kryeit.event.api.EventFactory;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 public interface GlueCreateEvent {
     Event<GlueCreateEvent> EVENT = EventFactory.createArrayBacked(GlueCreateEvent.class, listeners -> (player, blocks) -> {
         for (GlueCreateEvent listener : listeners) {
-            return listener.onCreateGlue(player, blocks);
+            if (!listener.onCreateGlue(player, blocks)) return false;
         }
         return true;
     });
 
-    boolean onCreateGlue(ServerPlayerEntity player, List<BlockPos> blocks);
+    boolean onCreateGlue(ServerPlayer player, List<BlockPos> blocks);
 }
